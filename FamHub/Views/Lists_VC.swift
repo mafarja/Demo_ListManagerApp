@@ -21,10 +21,11 @@ class Lists_VC: UIViewController {
     
     configUI()
     configActionButton()
-    
-    ListManager.delegate = self
-    
     displayLists()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    ListManager.delegate = self
   }
   
   func configUI() {

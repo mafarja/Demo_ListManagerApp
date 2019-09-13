@@ -6,6 +6,8 @@
 //  Copyright © 2019 StackRank, LLC. All rights reserved.
 //
 
+let glb_Domain: String = "http://localhost:8080"
+
 import UIKit
 
 @UIApplicationMain

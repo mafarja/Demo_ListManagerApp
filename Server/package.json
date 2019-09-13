@@ -1,0 +1,12 @@
+{
+  "name": "masd",
+  "version": "0.0.3",
+  "engines": {
+    "node": "8.9.4"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.4.12"
+  },
+  "devDependencies": {}
+}

@@ -8,7 +8,10 @@
 
 import Foundation
 
-struct ChuckNorrisJoke: Decodable {
-  let icon_url: URL
-  let value: String
+struct Task: Decodable {
+  let _id: String
+  let description: String
+  let status: String?
+  let posted: String
+  let list: String
 }

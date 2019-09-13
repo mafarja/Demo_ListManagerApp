@@ -17,37 +17,26 @@ class NetworkOperation {
     self.queryURL = url
   }
   
-  func sendHttpGetRequest(_ success: @escaping (Data) -> Void, failure: @escaping (Error) -> Void) {
-    
-    let task = NetworkOperation.session.dataTask(with: queryURL) {
+  func sendHttpGetRequest(_ completion: @escaping (Data?, Error?) -> Void) {
+    let _ = NetworkOperation.session.dataTask(with: queryURL) {
       (data, response, error) in
-      
-      if let error = error {
-        failure(error)
-      }
-      
-      guard let httpResponse = response as? HTTPURLResponse
-         else {
-          failure(NSError(domain: "Unknown network error.", code: 0, userInfo: nil))
+      guard let data = data,
+        error == nil else {
+          completion(nil, error)
           return
       }
-      
-      if let data = data,
-        httpResponse.statusCode == 200 {
-        success(data)
-      } else {
-        failure(NSError(domain: "Network error", code: httpResponse.statusCode, userInfo: nil))
-      }
+      completion(data, nil)
     }.resume()
   }
   
-  func sendHttpPostRequest(_ params: [String: Any]? = [:], success: @escaping (Data) -> Void, failure: @escaping (Error) -> Void) {
+  func sendHttpPostRequest(_ params: [String: Any], success: @escaping (Data) -> Void, failure: @escaping (Error) -> Void) {
     
     let jsonData = try! JSONSerialization.data(withJSONObject: params, options: [])
     
     var request = URLRequest(url: queryURL)
     request.httpMethod = "Post"
     request.httpBody = jsonData
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
     let session = URLSession(configuration: .default)
     let task = session.dataTask(with: request) {
@@ -65,6 +54,7 @@ class NetworkOperation {
       
       if let data = data,
         httpResponse.statusCode == 200 {
+        
         success(data)
       } else {
         failure(NSError(domain: "Network error", code: httpResponse.statusCode, userInfo: nil))

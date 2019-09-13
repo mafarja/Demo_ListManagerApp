@@ -9,7 +9,6 @@
 import UIKit
 
 class AddListModal_VC: UIViewController {
-  
   let listManager = ListManager()
   @IBOutlet weak var textField_ListName: UITextField!
   
@@ -17,16 +16,12 @@ class AddListModal_VC: UIViewController {
     super.viewDidLoad()
   }
   
- 
   @IBAction func onCreateListButton(_ sender: Any) {
     guard let name = textField_ListName.text,
       name.count != 0 else {
       return
     }
-    
     self.createList()
-    
-    
   }
   
   @IBAction func dismissPopup(_ sender: Any) {
@@ -43,17 +38,6 @@ class AddListModal_VC: UIViewController {
       DispatchQueue.main.async {
         self.performSegue(withIdentifier: "unwindToLists", sender: self)
       }
-      
     }
   }
-  
-//  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//    if segue.identifier == "unwindToLists" {
-//      let controller = segue.destination as! Lists_VC
-//      
-//    }
-//  }
-  
-  
-  
 }
