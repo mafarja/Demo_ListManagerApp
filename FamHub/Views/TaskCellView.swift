@@ -10,5 +10,4 @@ import UIKit
 
 class TaskCellView: UITableViewCell {
   @IBOutlet weak var label_description: UILabel!
-  
 }

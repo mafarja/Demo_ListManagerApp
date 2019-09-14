@@ -20,7 +20,6 @@ extension ListManagerDelegate {
 }
 
 class ListManager: NSObject {
-  
   static var lists: [List]?
   static var delegate: ListManagerDelegate?
   
@@ -42,7 +41,6 @@ class ListManager: NSObject {
       { (data) in
         if let result = String(data: data, encoding: .utf8) {
           print(result)
-          
         }
         
         guard let list = try? JSONDecoder().decode(List.self, from: data) else {
@@ -53,7 +51,6 @@ class ListManager: NSObject {
         if let delegate = ListManager.delegate {
           delegate.didAddList(list: list, sender: self)
         }
-        
         completion(nil)
       },
       failure:
@@ -89,7 +86,7 @@ class ListManager: NSObject {
   }
   
   func deleteList() {
-    
+    // to implement
   }
   
   func addTask(list: List, description: String, completion: @escaping (Error?) -> Void) {
@@ -115,7 +112,6 @@ class ListManager: NSObject {
         if let delegate = ListManager.delegate {
           delegate.didAddTask(task: task, sender: self)
         }
-        
         completion(nil)
     },
     failure:
@@ -131,7 +127,6 @@ class ListManager: NSObject {
     networkOperation.sendHttpGetRequest({
       (data, error) in
       
-      
       guard let data = data,
         error == nil else {
           completion(nil, error ?? NSError(domain: "Error: Network error", code: 0 , userInfo: nil))
@@ -140,7 +135,6 @@ class ListManager: NSObject {
       
       if let result = String(data: data, encoding: .utf8) {
         print(result)
-        
       }
       
       do {
@@ -153,6 +147,4 @@ class ListManager: NSObject {
       }
     })
   }
-  
-  
 }

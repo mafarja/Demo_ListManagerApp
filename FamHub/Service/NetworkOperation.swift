@@ -9,7 +9,6 @@
 import Foundation
 
 class NetworkOperation {
- 
   var queryURL: URL
   static var session = URLSession(configuration: .default)
   
@@ -30,9 +29,7 @@ class NetworkOperation {
   }
   
   func sendHttpPostRequest(_ params: [String: Any], success: @escaping (Data) -> Void, failure: @escaping (Error) -> Void) {
-    
     let jsonData = try! JSONSerialization.data(withJSONObject: params, options: [])
-    
     var request = URLRequest(url: queryURL)
     request.httpMethod = "Post"
     request.httpBody = jsonData

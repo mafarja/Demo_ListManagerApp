@@ -12,6 +12,6 @@ struct List: Decodable {
   let _id: String
   let name: String?
   let description: String
-  //let status: String
+  let status: String?
   let created: String
 }

@@ -10,15 +10,14 @@ import UIKit
 import Floaty
 
 class Lists_VC: UIViewController {
+  @IBOutlet weak var tableView: UITableView!
   
   let listManager = ListManager()
-  @IBOutlet weak var tableView: UITableView!
   var lists = [List]()
   var selectedList: List?
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     configUI()
     configActionButton()
     displayLists()
@@ -58,7 +57,6 @@ class Lists_VC: UIViewController {
       }
     }
   }
-  
 }
 
 extension Lists_VC: UITableViewDataSource, UITableViewDelegate {
@@ -76,7 +74,6 @@ extension Lists_VC: UITableViewDataSource, UITableViewDelegate {
     self.selectedList = self.lists[indexPath.row]
     self.performSegue(withIdentifier: "showListDetail", sender: self)
   }
-  
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "showListDetail" {
@@ -100,4 +97,3 @@ extension Lists_VC: ListManagerDelegate {
     }
   }
 }
-

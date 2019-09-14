@@ -40,12 +40,10 @@ class ListDetail_VC: UIViewController {
           return
       }
       self.tasks = tasks.reversed()
-      
-      
+    
       DispatchQueue.main.async {
         self.tableView.reloadData()
       }
-      
     }
   }
   
@@ -62,7 +60,6 @@ class ListDetail_VC: UIViewController {
       }
       DispatchQueue.main.async {
         self.textField_taskDescription.text = ""
-
       }
     }
   }
