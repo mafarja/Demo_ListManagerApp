@@ -9,9 +9,9 @@
 import Foundation
 
 struct Task: Decodable {
-  let _id: String
+  let _id: String?
   let description: String
   let status: String?
-  let posted: String
-  let list: String
+  let posted: String?
+  let list_id: String
 }

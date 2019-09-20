@@ -8,7 +8,7 @@ var Task = new Schema({
   	type: Date,
   	default: Date.now
   },
-  list: {
+  list_id: {
   	type: mongoose.Schema.Types.ObjectId,
   	ref: 'List'
   }

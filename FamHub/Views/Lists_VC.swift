@@ -12,7 +12,7 @@ import Floaty
 class Lists_VC: UIViewController {
   @IBOutlet weak var tableView: UITableView!
   
-  let listManager = ListManager()
+  let listManager = ListManager(service: NetworkOperation())
   var lists = [List]()
   var selectedList: List?
   

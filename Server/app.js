@@ -23,11 +23,11 @@ app.post('/lists/:id/tasks', function(req, res, next) {
   console.log(req.body);
 
   var description = req.body["description"];
-  var list_Id = req.params.id;
+  var list_id = req.params.id;
 
   var taskObj = {
     "description": description,
-    "list": list_Id
+    "list_id": list_id
   }
 
   var task = new Task(taskObj);
@@ -37,6 +37,7 @@ app.post('/lists/:id/tasks', function(req, res, next) {
 	  console.log(err) 
 	  return 
 	}
+	console.log(result)
 	res.status(200).json(result).end();
   }); 
 });
@@ -45,9 +46,9 @@ app.get('/lists/:id/tasks', function(req, res, next) {
   console.log('get tasks')
   console.log(req.params.id)
 
-  var list_Id = req.params.id
+  var list_id = req.params.id
 
-  Task.find({"list": ObjectId(list_Id)}, function(err, result) {
+  Task.find({"list_id": ObjectId(list_id)}, function(err, result) {
   	res.status(200).json(result).end();
   });
 });

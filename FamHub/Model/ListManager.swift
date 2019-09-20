@@ -8,66 +8,58 @@
 
 import Foundation
 
-protocol ListManagerDelegate: AnyObject  {
+protocol ListManagerDelegate: AnyObject  {  // allows for viewControllers to refresh themselves
   func didAddList(list: List, sender: ListManager)
   func didAddTask(task: Task, sender: ListManager)
 }
 
-// provides default implementation as to make methods optional
-extension ListManagerDelegate {
+extension ListManagerDelegate {  // provides default implementation as to make methods optional
   func didAddList(list: List, sender: ListManager) {}
   func didAddTask(task: Task, sender: ListManager) {}
 }
 
 class ListManager: NSObject {
-  static var lists: [List]?
-  static var delegate: ListManagerDelegate?
+  var lists: [List]?
+  static var delegate: ListManagerDelegate?  // needed to ensure only one delegated instance works across controllers
+  var service: Service
   
-  override init() {
-    
+  init(service: Service) {
+    self.service = service
   }
   
-  func createList(name: String, completion: @escaping (Error?) -> Void) {
+  func add(list: List, completion: @escaping (Error?) -> Void) {
     let params = [
-      "description": "Take the trash out",
-      "name": name
+      "description": list.description,
+      "name": list.name
     ]
     
     let  url = URL(string: glb_Domain + "/lists")!
-    let networkOperation = NetworkOperation(url: url)
     
-    networkOperation.sendHttpPostRequest(params,
-      success:
-      { (data) in
-        if let result = String(data: data, encoding: .utf8) {
-          print(result)
-        }
+    
+    service.sendHttpPostRequest(url: url, params: params as [String : Any], completion: {
+      (data, error) in
         
-        guard let list = try? JSONDecoder().decode(List.self, from: data) else {
-          print("Error: Could not decode data")
-          return
-        }
-        
-        if let delegate = ListManager.delegate {
-          delegate.didAddList(list: list, sender: self)
-        }
-        completion(nil)
-      },
-      failure:
-      { (error) in
-        print(error)
+      guard let list = try? JSONDecoder().decode(List.self, from: data!) else {
+        print("Error: Could not decode data")
         completion(error)
-      })
+        return
+      }
+      
+      if let delegate = ListManager.delegate {
+        delegate.didAddList(list: list, sender: self)
+      }
+      completion(nil)
+    })
   }
   
   func getLists(completion: @escaping ([List]?, Error?) -> Void) {
-    if let lists = ListManager.lists {
+    if let lists = self.lists {
       completion(lists, nil)
       return
     }
     let  url = URL(string: glb_Domain + "/lists")!
-    let networkOperation = NetworkOperation(url: url)
-    networkOperation.sendHttpGetRequest({
+    
+    service.sendHttpGetRequest(url: url, completion: {
       (data, error) in
       guard let data = data,
         error == nil else {
@@ -75,8 +67,8 @@ class ListManager: NSObject {
         return
       }
       do {
-        ListManager.lists = try JSONDecoder().decode(Array<List>.self, from: data)
-        completion(ListManager.lists, nil)
+        self.lists = try JSONDecoder().decode(Array<List>.self, from: data)
+        completion(self.lists, nil)
         return
       } catch let error {
         print(error)
@@ -89,42 +81,41 @@ class ListManager: NSObject {
     // to implement
   }
   
-  func addTask(list: List, description: String, completion: @escaping (Error?) -> Void) {
+  func add(task: Task, completion: @escaping (Error?) -> Void) {
     let params = [
-      "description": description
+      "description": task.description,
+      "list_id": task.list_id
     ]
     
-    let  url = URL(string: glb_Domain + "/lists/" + list._id + "/tasks")!
-    let networkOperation = NetworkOperation(url: url)
-    
-    networkOperation.sendHttpPostRequest(params,
-      success:
-      { (data) in
-        if let result = String(data: data, encoding: .utf8) {
-          print(result)
-        }
+    let  url = URL(string: glb_Domain + "/lists/" + task.list_id + "/tasks")!
+    service.sendHttpPostRequest(url: url, params: params, completion: {
+      (data, error) in
+      
+      let string = String(bytes: data!, encoding: .utf8)
+      print(string)
+      
+      guard let data = data,
+        error == nil else {
         
-        guard let task = try? JSONDecoder().decode(Task.self, from: data) else {
-          print("Error: Could not decode data")
-          return
-        }
+        completion(error!)
+        return
+      }
         
-        if let delegate = ListManager.delegate {
-          delegate.didAddTask(task: task, sender: self)
-        }
-        completion(nil)
-    },
-    failure:
-      { (error) in
-        print(error)
-        completion(error)
+      guard let task = try? JSONDecoder().decode(Task.self, from: data) else {
+        completion(NSError(domain: "Error: Could not decode object", code: 0, userInfo: nil))
+        return
+      }
+      
+      if let delegate = ListManager.delegate {
+        delegate.didAddTask(task: task, sender: self)
+      }
+      completion(nil)
     })
   }
   
-  func getTasks(list: List, completion: @escaping ([Task]?, Error?) -> Void) {
-    let  url = URL(string: glb_Domain + "/lists/" + list._id + "/tasks")!
-    let networkOperation = NetworkOperation(url: url)
-    networkOperation.sendHttpGetRequest({
+  func getTasks(list_id: String, completion: @escaping ([Task]?, Error?) -> Void) {
+    let  url = URL(string: glb_Domain + "/lists/" + list_id + "/tasks")!
+    service.sendHttpGetRequest(url: url, completion: {
       (data, error) in
       
       guard let data = data,

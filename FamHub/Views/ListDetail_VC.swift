@@ -12,7 +12,8 @@ class ListDetail_VC: UIViewController {
   
   var list: List?
   var tasks = [Task]()
-  let listManager = ListManager()
+
+  let listManager = ListManager(service: NetworkOperation())  // DI the service for testable reasons among others
   
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var textField_taskDescription: UITextField!
@@ -29,10 +30,10 @@ class ListDetail_VC: UIViewController {
   }
   
   func getTasks() {
-    guard let list = self.list else {
+    guard let list_id = self.list?._id else {
       return
     }
-    self.listManager.getTasks(list: list) {
+    self.listManager.getTasks(list_id: list_id) {
       (tasks, error) in
       guard let tasks = tasks,
         error == nil else {
@@ -50,10 +51,11 @@ class ListDetail_VC: UIViewController {
   func createTask() {
     guard let description = self.textField_taskDescription.text,
       description.count > 0,
-      let list = self.list else {
+      let list_id = self.list?._id else {
       return
     }
-    self.listManager.addTask(list: list, description: description) {
+    let task = Task(_id: nil, description: description, status: nil, posted: nil, list_id: list_id)
+    self.listManager.add(task: task) {
       (error) in
       if error != nil {
         print(error)

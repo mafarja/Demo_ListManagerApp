@@ -11,6 +11,10 @@
 		1B0E8CD42329C378005DCE3E /* DesignableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0E8CD32329C378005DCE3E /* DesignableView.swift */; };
 		1B0E8CD6232ABB87005DCE3E /* ListDetail_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0E8CD5232ABB87005DCE3E /* ListDetail_VC.swift */; };
 		1B0E8CD8232AD67A005DCE3E /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0E8CD7232AD67A005DCE3E /* TaskCellView.swift */; };
+		1B202EFE2332C66900002EFF /* FHURLSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202EFD2332C66900002EFF /* FHURLSessionMock.swift */; };
+		1B202F002332CDE800002EFF /* ListManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202EFF2332CDE800002EFF /* ListManagerTests.swift */; };
+		1B202F042334178C00002EFF /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202F032334178C00002EFF /* Service.swift */; };
+		1B202F072334346300002EFF /* ServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202F052334341300002EFF /* ServiceMock.swift */; };
 		1B7299C22329642A00218BBF /* ListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7299C12329642A00218BBF /* ListCellView.swift */; };
 		1BE0BBA32326DBC400B18F20 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0BBA22326DBC400B18F20 /* Task.swift */; };
 		1BE0BBA52327233100B18F20 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0BBA42327233100B18F20 /* List.swift */; };
@@ -20,7 +24,6 @@
 		1BE1CFF823231B6700EC3FD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1CFF623231B6700EC3FD2 /* Main.storyboard */; };
 		1BE1CFFA23231B6A00EC3FD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1CFF923231B6A00EC3FD2 /* Assets.xcassets */; };
 		1BE1CFFD23231B6A00EC3FD2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1CFFB23231B6A00EC3FD2 /* LaunchScreen.storyboard */; };
-		1BE1D00823231B6A00EC3FD2 /* FamHubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1D00723231B6A00EC3FD2 /* FamHubTests.swift */; };
 		1BE1D01323231B6A00EC3FD2 /* FamHubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1D01223231B6A00EC3FD2 /* FamHubUITests.swift */; };
 		1BE1D026232481A500EC3FD2 /* NetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1D025232481A500EC3FD2 /* NetworkOperation.swift */; };
 		B92ED7A4BE9A93647A07B86B /* Pods_FamHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0C554C12B2D966D932C3DF /* Pods_FamHub.framework */; };
@@ -48,6 +51,10 @@
 		1B0E8CD32329C378005DCE3E /* DesignableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableView.swift; sourceTree = "<group>"; };
 		1B0E8CD5232ABB87005DCE3E /* ListDetail_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetail_VC.swift; sourceTree = "<group>"; };
 		1B0E8CD7232AD67A005DCE3E /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
+		1B202EFD2332C66900002EFF /* FHURLSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FHURLSessionMock.swift; sourceTree = "<group>"; };
+		1B202EFF2332CDE800002EFF /* ListManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManagerTests.swift; sourceTree = "<group>"; };
+		1B202F032334178C00002EFF /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		1B202F052334341300002EFF /* ServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceMock.swift; sourceTree = "<group>"; };
 		1B7299C12329642A00218BBF /* ListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCellView.swift; sourceTree = "<group>"; };
 		1BE0BBA22326DBC400B18F20 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		1BE0BBA42327233100B18F20 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -60,7 +67,6 @@
 		1BE1CFFC23231B6A00EC3FD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1BE1CFFE23231B6A00EC3FD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1BE1D00323231B6A00EC3FD2 /* FamHubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FamHubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1BE1D00723231B6A00EC3FD2 /* FamHubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamHubTests.swift; sourceTree = "<group>"; };
 		1BE1D00923231B6A00EC3FD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1BE1D00E23231B6A00EC3FD2 /* FamHubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FamHubUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BE1D01223231B6A00EC3FD2 /* FamHubUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamHubUITests.swift; sourceTree = "<group>"; };
@@ -97,6 +103,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B202EFC2332C5FB00002EFF /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1B202EFD2332C66900002EFF /* FHURLSessionMock.swift */,
+				1B202F052334341300002EFF /* ServiceMock.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		1B7299C023286DDE00218BBF /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +160,7 @@
 		1BE1CFF123231B6700EC3FD2 /* FamHub */ = {
 			isa = PBXGroup;
 			children = (
+				1B202EFC2332C5FB00002EFF /* Utils */,
 				1B7299C023286DDE00218BBF /* Views */,
 				1BE0BBA12326D99B00B18F20 /* Model */,
 				1BE1D02023231BA600EC3FD2 /* Service */,
@@ -160,7 +176,7 @@
 		1BE1D00623231B6A00EC3FD2 /* FamHubTests */ = {
 			isa = PBXGroup;
 			children = (
-				1BE1D00723231B6A00EC3FD2 /* FamHubTests.swift */,
+				1B202EFF2332CDE800002EFF /* ListManagerTests.swift */,
 				1BE1D00923231B6A00EC3FD2 /* Info.plist */,
 			);
 			path = FamHubTests;
@@ -179,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				1BE1D025232481A500EC3FD2 /* NetworkOperation.swift */,
+				1B202F032334178C00002EFF /* Service.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -372,6 +389,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B202EFE2332C66900002EFF /* FHURLSessionMock.swift in Sources */,
+				1B202F042334178C00002EFF /* Service.swift in Sources */,
 				1B0E8CD8232AD67A005DCE3E /* TaskCellView.swift in Sources */,
 				1BE0BBA32326DBC400B18F20 /* Task.swift in Sources */,
 				1B7299C22329642A00218BBF /* ListCellView.swift in Sources */,
@@ -383,6 +402,7 @@
 				1BE1CFF323231B6700EC3FD2 /* AppDelegate.swift in Sources */,
 				1B0E8CD42329C378005DCE3E /* DesignableView.swift in Sources */,
 				1B0E8CD6232ABB87005DCE3E /* ListDetail_VC.swift in Sources */,
+				1B202F072334346300002EFF /* ServiceMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,7 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BE1D00823231B6A00EC3FD2 /* FamHubTests.swift in Sources */,
+				1B202F002332CDE800002EFF /* ListManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

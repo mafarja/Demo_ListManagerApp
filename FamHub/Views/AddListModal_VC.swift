@@ -9,7 +9,7 @@
 import UIKit
 
 class AddListModal_VC: UIViewController {
-  let listManager = ListManager()
+  let listManager = ListManager(service: NetworkOperation())
   @IBOutlet weak var textField_ListName: UITextField!
   
   override func viewDidLoad() {
@@ -30,7 +30,8 @@ class AddListModal_VC: UIViewController {
   
   func createList() {
     guard let name = self.textField_ListName.text else { return }
-    self.listManager.createList(name: name) {
+    let list = List(_id: nil, name: name, description: nil, status: nil, created: nil)
+    self.listManager.add(list: list) {
       (error) in
       if let error = error {
         print(error)

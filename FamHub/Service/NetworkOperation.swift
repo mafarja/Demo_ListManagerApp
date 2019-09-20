@@ -8,16 +8,17 @@
 
 import Foundation
 
-class NetworkOperation {
-  var queryURL: URL
+class NetworkOperation: Service {
+  
+  
   static var session = URLSession(configuration: .default)
   
-  init(url: URL) {
-    self.queryURL = url
+  init() {
+    
   }
   
-  func sendHttpGetRequest(_ completion: @escaping (Data?, Error?) -> Void) {
-    let _ = NetworkOperation.session.dataTask(with: queryURL) {
+  func sendHttpGetRequest(url: URL, completion: @escaping (Data?, Error?) -> Void) {
+    NetworkOperation.session.dataTask(with: url) {
       (data, response, error) in
       guard let data = data,
         error == nil else {
@@ -28,34 +29,24 @@ class NetworkOperation {
     }.resume()
   }
   
-  func sendHttpPostRequest(_ params: [String: Any], success: @escaping (Data) -> Void, failure: @escaping (Error) -> Void) {
-    let jsonData = try! JSONSerialization.data(withJSONObject: params, options: [])
-    var request = URLRequest(url: queryURL)
+  func sendHttpPostRequest(url: URL, params: [String: Any], completion: @escaping (Data?, Error?) -> Void) {
+    guard let jsonData = try? JSONSerialization.data(withJSONObject: params, options: []) else {
+      completion(nil, NSError(domain: "Error: Serialization of http post params failed", code: 0, userInfo: nil))
+      return
+    }
+    var request = URLRequest(url: url)
     request.httpMethod = "Post"
     request.httpBody = jsonData
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
-    let session = URLSession(configuration: .default)
-    let task = session.dataTask(with: request) {
+    NetworkOperation.session.dataTask(with: request) {
       (data, response, error) in
-      
-      if let error = error {
-        failure(error)
+      guard let data = data,
+        error == nil else {
+        completion(nil, error)
+        return
       }
-      
-      guard let httpResponse = response as? HTTPURLResponse
-        else {
-          failure(NSError(domain: "Unknown network error.", code: 0, userInfo: nil))
-          return
-      }
-      
-      if let data = data,
-        httpResponse.statusCode == 200 {
-        
-        success(data)
-      } else {
-        failure(NSError(domain: "Network error", code: httpResponse.statusCode, userInfo: nil))
-      }
+      completion(data, nil)
     }.resume()
   }
 }
