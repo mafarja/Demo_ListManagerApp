@@ -11,6 +11,9 @@ var Task = new Schema({
   list_id: {
   	type: mongoose.Schema.Types.ObjectId,
   	ref: 'List'
+  },
+  date_modified: {
+  	type: Date
   }
 });
 

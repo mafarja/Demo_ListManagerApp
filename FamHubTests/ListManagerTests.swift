@@ -7,160 +7,156 @@
 //
 
 import XCTest
+import CoreData
 @testable import FamHub
 
 class ListManagerTests: XCTestCase {
-  var sut: ListManager?
+  
+  var sut: ListManager!
   
   override func setUp() {
     super.setUp()
     
-    sut = ListManager(service: ServiceMock())
+    sut = ListManager(container: mockPersistantContainer)
   }
-
+  
   override func tearDown() {
     sut = nil
+    flushData()
+    
     super.tearDown()
   }
   
-  func testGetListsCompletesWithListsArray() {
-    // given
-    let jsonObj = [
-      [
-        "_id":"5d7820be850fb20811718b14",
-        "name":"Chores",
-        "description":"Take the trash out",
-        "created":"2019-09-10T22:16:30.321Z",
-        "__v":0
-      ],
-      [
-        "_id":"5d78220e850fb20811718b15",
-        "name":"Chores",
-        "description":"Take the trash out",
-        "created":"2019-09-10T22:22:06.017Z",
-        "__v":0
-      ]
-    ] as [[String: Any]]
-  
-    let jsonData = try? JSONSerialization.data(withJSONObject: jsonObj, options: [])
-    (sut!.service as! ServiceMock).data = jsonData
-    let promise = expectation(description: "Array of List objects retreived.")
+  func test_GetLists() {
     
+    // given
+    _ = insertList(name: "1")
+    _ = insertList(name: "2")
+    _ = insertList(name: "3")
+    _ = insertList(name: "4")
+    _ = insertList(name: "5")
+
     // when
-    sut?.getLists(completion: { (lists, error) in
-      
-      guard let lists = lists,
-        error == nil else {
-          XCTFail("Error getLists: \(error!.localizedDescription)")
-          return
-      }
-      
-      
-      // then
-      if lists.count == 2 {
-        
-        promise.fulfill()
-      }
-    })
-    wait(for: [promise], timeout: 5)
+    let lists = sut.getLists()
+    
+    // then
+    XCTAssertEqual(lists.count, 5)
+
   }
   
-  func testAddListCompletesWithNoError() {
+  func test_AddList() {
     // given
-    let listObj = [
-        "_id":"5d7820be850fb20811718b14",
-        "name":"Chores",
-        "description":"Take the trash out",
-        "created":"2019-09-10T22:16:30.321Z",
-        "__v":0
-    ] as [String: Any]
-    
-    let jsonData = try? JSONSerialization.data(withJSONObject: listObj, options: [])
-    (sut!.service as! ServiceMock).data = jsonData
-    let promise = expectation(description: "List was added successfully")
-    let list = List(_id: nil, name: "Chores", description: "Take the trash out.", status: nil, created: nil)
+    _ = insertList(name: "1")
+    _ = insertList(name: "2")
+    _ = insertList(name: "3")
+    _ = insertList(name: "4")
+    _ = insertList(name: "5")
     
     // when
-    sut?.add(list: list, completion: { (error) in
-      // then
-      if error == nil {
-        promise.fulfill()
-      }
-    })
+    _ = sut.addList(name: "6", description: nil)
     
-    wait(for: [promise], timeout: 5)
+    // then
+    let lists = sut.getLists()
+    XCTAssertEqual(lists.count, 6)
   }
   
-  func testAddTaskCompletesWithNoErrors() {
+  func test_getTasks() {
     // given
-    let returnData = [
-      "_id":"5d7820be850fb20811718b14",
-      "description":"Take the trash out",
-      "created":"2019-09-10T22:16:30.321Z",
-      "list_id":"5d7820be850fb20811718b14",
-      "__v":0
-      ] as [String: Any]
-    
-    let jsonData = try? JSONSerialization.data(withJSONObject: returnData, options: [])
-    (sut!.service as! ServiceMock).data = jsonData
-    let promise = expectation(description: "Task was added successfully")
-    let task = Task(_id: nil, description: "Take the trash out", status: nil, posted: nil, list_id: "5d7820be850fb20811718b14")
+    _ = insertTask(description: "1", list_id: "123")
+    _ = insertTask(description: "2", list_id: "123")
+    _ = insertTask(description: "3", list_id: "123")
     
     // when
-    sut?.add(task: task, completion: { (error) in
-      // then
-      if error == nil {
-        promise.fulfill()
-      }
-    })
+    let tasks = sut.getTasks(list_id: "123")
     
-    wait(for: [promise], timeout: 5)
-    
+    // then
+    XCTAssertEqual(tasks.count, 3)
   }
   
-  func testGetTasksCompletesWithArrayOfTasks() {
+  func test_addTask() {
     // given
-    let jsonObj = [
-      [
-        "_id":"5d7820be850fb20811718b14",
-        "description":"Take the trash out",
-        "posted":"2019-09-10T22:16:30.321Z",
-        "list_id":"5d7820be850fb20811718b14",
-        "__v":0
-      ],
-      [
-        "_id":"5d7820be850fb20811718b14",
-        "description":"Take the trash out",
-        "posted":"2019-09-10T22:16:30.321Z",
-        "list_id":"5d7820be850fb20811718b14",
-        "__v":0
-      ]
-    ] as [[String: Any]]
-    
-    let jsonData = try? JSONSerialization.data(withJSONObject: jsonObj, options: [])
-    (sut!.service as! ServiceMock).data = jsonData
-    let promise = expectation(description: "Array of task objects retreived.")
+    _ = insertTask(description: "1", list_id: "123")
+    _ = insertTask(description: "2", list_id: "123")
+    _ = insertTask(description: "3", list_id: "123")
     
     // when
-    sut?.getTasks(list_id: "5d7820be850fb20811718b14" , completion: { (tasks, error) in
-      
-      guard let tasks = tasks,
-        error == nil else {
-          XCTFail("Error getLists: \(error!.localizedDescription)")
-          return
-      }
-      
-      
-      // then
-      if tasks.count == 2 {
-        
-        promise.fulfill()
-      }
-    })
-    wait(for: [promise], timeout: 5)
+    _ = sut.addTask(description: "4", list_id: "123")
+    
+    // then
+    let tasks = sut.getTasks(list_id: "123")
+    XCTAssertEqual(tasks.count, 4)
   }
   
+  // stub functions
+  func insertList( name: String ) -> List? {
+    let obj = NSEntityDescription.insertNewObject(forEntityName: "List", into: mockPersistantContainer.viewContext)
+
+    obj.setValue(name, forKey: "list_name")
+    
+    do {
+        try mockPersistantContainer.viewContext.save()
+    }  catch {
+        print("create fakes error \(error)")
+    }
+
+    return obj as? List
+  }
   
+  func insertTask( description: String, list_id: String ) -> Task? {
+    let obj = NSEntityDescription.insertNewObject(forEntityName: "Task", into: mockPersistantContainer.viewContext)
+
+    obj.setValue(description, forKey: "task_description")
+    obj.setValue(list_id, forKey: "list_id")
+    
+    do {
+        try mockPersistantContainer.viewContext.save()
+    }  catch {
+        print("create fakes error \(error)")
+    }
+
+    return obj as? Task
+  }
   
+  func flushData() {
+          
+      let fetchRequestList:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest<NSFetchRequestResult>(entityName: "List")
+      let lists = try! mockPersistantContainer.viewContext.fetch(fetchRequestList)
+      for case let obj as NSManagedObject in lists {
+          mockPersistantContainer.viewContext.delete(obj)
+      }
+    
+    let fetchRequestTask:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
+    let tasks = try! mockPersistantContainer.viewContext.fetch(fetchRequestTask)
+    for case let obj as NSManagedObject in tasks {
+        mockPersistantContainer.viewContext.delete(obj)
+    }
+    
+      try! mockPersistantContainer.viewContext.save()
+
+  }
   
+  lazy var mockPersistantContainer: NSPersistentContainer = {
+      
+      let container = NSPersistentContainer(name: "FamHub", managedObjectModel: self.managedObjectModel)
+      let description = NSPersistentStoreDescription()
+      description.type = NSInMemoryStoreType
+      description.shouldAddStoreAsynchronously = false // Make it simpler in test env
+      
+      container.persistentStoreDescriptions = [description]
+      container.loadPersistentStores { (description, error) in
+          // Check if the data store is in memory
+          precondition( description.type == NSInMemoryStoreType )
+                                      
+          // Check if creating container wrong
+          if let error = error {
+              fatalError("Create an in-mem coordinator failed \(error)")
+          }
+      }
+      return container
+  }()
+  
+  lazy var managedObjectModel: NSManagedObjectModel = {
+      let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: type(of: self))] )!
+      return managedObjectModel
+  }()
 }

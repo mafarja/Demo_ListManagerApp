@@ -6,136 +6,127 @@
 //  Copyright © 2019 StackRank, LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import CoreData
 
-protocol ListManagerDelegate: AnyObject  {  // allows for viewControllers to refresh themselves
-  func didAddList(list: List, sender: ListManager)
-  func didAddTask(task: Task, sender: ListManager)
-}
-
-extension ListManagerDelegate {  // provides default implementation as to make methods optional
-  func didAddList(list: List, sender: ListManager) {}
-  func didAddTask(task: Task, sender: ListManager) {}
+protocol ListManagerDelegate: AnyObject  {
+  func didUpdateData()
 }
 
 class ListManager: NSObject {
-  var lists: [List]?
-  static var delegate: ListManagerDelegate?  // needed to ensure only one delegated instance works across controllers
-  var service: Service
+  static var delegate: ListManagerDelegate?
+  var dataSync: DataSync?
+  var persistentContainer: NSPersistentContainer!
   
-  init(service: Service) {
-    self.service = service
-  }
+  lazy var backgroundContext: NSManagedObjectContext = {
+    return self.persistentContainer.newBackgroundContext()
+  }()
   
-  func add(list: List, completion: @escaping (Error?) -> Void) {
-    let params = [
-      "description": list.description,
-      "name": list.name
-    ]
+  init(container: NSPersistentContainer) {
+    super.init()
+    self.persistentContainer = container
+    self.dataSync = DataSync()
+    self.dataSync?.delegate = self
     
-    let  url = URL(string: glb_Domain + "/lists")!
-    
-    
-    service.sendHttpPostRequest(url: url, params: params as [String : Any], completion: {
-      (data, error) in
-        
-      guard let list = try? JSONDecoder().decode(List.self, from: data!) else {
-        print("Error: Could not decode data")
-        completion(error)
-        return
+    if let dataSync = self.dataSync {
+      if DataSync.lastSync == nil {
+        dataSync.sync()
       }
-      
-      if let delegate = ListManager.delegate {
-        delegate.didAddList(list: list, sender: self)
-      }
-      completion(nil)
-    })
-  }
-  
-  func getLists(completion: @escaping ([List]?, Error?) -> Void) {
-    if let lists = self.lists {
-      completion(lists, nil)
-      return
     }
-    let  url = URL(string: glb_Domain + "/lists")!
+  }
+  
+  convenience override init() {
+    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+      fatalError("Cannot get shared app delegate")
+    }
+    self.init(container: appDelegate.persistentContainer)
+  }
+  
+  func addList(name: String, description: String?) -> List? {
+
+    let list = NSEntityDescription.insertNewObject(forEntityName: "List", into: backgroundContext) as! List
+
+    let objectId = Utils().objectId()
+    list.setValue(objectId, forKey: "id")
     
-    service.sendHttpGetRequest(url: url, completion: {
-      (data, error) in
-      guard let data = data,
-        error == nil else {
-          completion(nil, error ?? NSError(domain: "Error: Network error", code: 0 , userInfo: nil))
-        return
-      }
-      do {
-        self.lists = try JSONDecoder().decode(Array<List>.self, from: data)
-        completion(self.lists, nil)
-        return
-      } catch let error {
-        print(error)
-        completion(nil, NSError(domain: error.localizedDescription, code: 0 , userInfo: nil))
-      }
-    })
+    list.setValue(name, forKey: "list_name")
+    if let description = description {
+      list.setValue(description, forKey: "list_description")
+    }
+    
+    let now = Date()
+    list.setValue(now, forKey: "date_modified")
+    list.setValue(now, forKeyPath: "created")
+    
+    self.save()
+    
+    return list
+  }
+  
+  func getLists() -> [List] {
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
+    let sort = NSSortDescriptor(key: #keyPath(List.created), ascending: false)
+       fetchRequest.sortDescriptors = [sort]
+    let lists = (try? backgroundContext.fetch(fetchRequest)) as! [List]
+    
+    return lists
   }
   
   func deleteList() {
     // to implement
   }
   
-  func add(task: Task, completion: @escaping (Error?) -> Void) {
-    let params = [
-      "description": task.description,
-      "list_id": task.list_id
-    ]
+  func addTask(description: String, list_id: String) -> Task? {
+    let task = NSEntityDescription.insertNewObject(forEntityName: "Task", into: backgroundContext) as! Task
     
-    let  url = URL(string: glb_Domain + "/lists/" + task.list_id + "/tasks")!
-    service.sendHttpPostRequest(url: url, params: params, completion: {
-      (data, error) in
-      
-      let string = String(bytes: data!, encoding: .utf8)
-      print(string)
-      
-      guard let data = data,
-        error == nil else {
-        
-        completion(error!)
-        return
-      }
-        
-      guard let task = try? JSONDecoder().decode(Task.self, from: data) else {
-        completion(NSError(domain: "Error: Could not decode object", code: 0, userInfo: nil))
-        return
-      }
-      
-      if let delegate = ListManager.delegate {
-        delegate.didAddTask(task: task, sender: self)
-      }
-      completion(nil)
-    })
+    let objectId = Utils().objectId()
+    
+    task.setValue(objectId, forKeyPath: "id")
+    task.setValue(description, forKeyPath: "task_description")
+    task.setValue(list_id, forKeyPath: "list_id")
+    let now = Date()
+    task.setValue(now, forKey: "posted")
+    task.setValue(now, forKey: "date_modified")
+    
+    self.save()
+    
+    return task
   }
   
-  func getTasks(list_id: String, completion: @escaping ([Task]?, Error?) -> Void) {
-    let  url = URL(string: glb_Domain + "/lists/" + list_id + "/tasks")!
-    service.sendHttpGetRequest(url: url, completion: {
-      (data, error) in
-      
-      guard let data = data,
-        error == nil else {
-          completion(nil, error ?? NSError(domain: "Error: Network error", code: 0 , userInfo: nil))
-          return
-      }
-      
-      if let result = String(data: data, encoding: .utf8) {
-        print(result)
-      }
-      
+  func getTasks(list_id: String) -> [Task] {
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
+    fetchRequest.predicate = NSPredicate(format: "list_id == %@", list_id)
+    let sort = NSSortDescriptor(key: #keyPath(Task.posted), ascending: false)
+    fetchRequest.sortDescriptors = [sort]
+    
+    let tasks = (try? persistentContainer.viewContext.fetch(fetchRequest)) as! [Task]
+    
+    return tasks
+  }
+  
+  private func save() {
+    if backgroundContext.hasChanges {
       do {
-        let tasks = try JSONDecoder().decode(Array<Task>.self, from: data)
-        completion(tasks, nil)
-        return
+        try backgroundContext.save()
+        
+        if let dataSync = self.dataSync {
+          dataSync.sync()
+        }
+        
+        if let delegate = ListManager.delegate {
+          delegate.didUpdateData()
+        }
       } catch let error {
-        print(error)
-        completion(nil, NSError(domain: error.localizedDescription, code: 0 , userInfo: nil))
+        print("Error saving context \(error)")
       }
-    })
+    }
+  }
+}
+
+extension ListManager: DataSyncDelegate {
+  func didCompleteDataSync() {
+    if let delegate = ListManager.delegate {
+      delegate.didUpdateData()
+    }
   }
 }

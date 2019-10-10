@@ -8,6 +8,9 @@ var List = new Schema({
   created: {
   	type: Date,
   	default: Date.now
+  },
+  date_modified: {
+  	type: Date
   }
 });
 

@@ -11,9 +11,7 @@ import UIKit
 class ListDetail_VC: UIViewController {
   
   var list: List?
-  var tasks = [Task]()
-
-  let listManager = ListManager(service: NetworkOperation())  // DI the service for testable reasons among others
+  let listManager = ListManager()
   
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var textField_taskDescription: UITextField!
@@ -22,60 +20,39 @@ class ListDetail_VC: UIViewController {
     super.viewDidLoad()
     ListManager.delegate = self
     configUI()
-    getTasks()
   }
   
   func configUI() {
-    self.title = self.list?.name
-  }
-  
-  func getTasks() {
-    guard let list_id = self.list?._id else {
-      return
-    }
-    self.listManager.getTasks(list_id: list_id) {
-      (tasks, error) in
-      guard let tasks = tasks,
-        error == nil else {
-          print(error)
-          return
-      }
-      self.tasks = tasks.reversed()
-    
-      DispatchQueue.main.async {
-        self.tableView.reloadData()
-      }
-    }
+    self.title = self.list?.list_name
   }
   
   func createTask() {
     guard let description = self.textField_taskDescription.text,
       description.count > 0,
-      let list_id = self.list?._id else {
+      let list_id = self.list?.id else {
       return
     }
-    let task = Task(_id: nil, description: description, status: nil, posted: nil, list_id: list_id)
-    self.listManager.add(task: task) {
-      (error) in
-      if error != nil {
-        print(error)
-      }
-      DispatchQueue.main.async {
-        self.textField_taskDescription.text = ""
-      }
-    }
+    
+    _ = self.listManager.addTask(description: description, list_id: list_id)
+    
+    self.textField_taskDescription.text = ""
   }
 }
 
 extension ListDetail_VC: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.tasks.count
+    guard let list_id = self.list?.id else {
+      print("Error: List has not been set")
+      fatalError("List has not been set")
+    }
+    return self.listManager.getTasks(list_id: list_id).count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCellView", for: indexPath) as! TaskCellView
-    cell.label_description.text = self.tasks[indexPath.row].description
-    
+    if let list_id = self.list?.id {
+      cell.label_description.text = self.listManager.getTasks(list_id: list_id)[indexPath.row].task_description
+    }
     return cell
   }
 }
@@ -89,8 +66,7 @@ extension ListDetail_VC: UITextFieldDelegate {
 }
 
 extension ListDetail_VC: ListManagerDelegate {
-  func didAddTask(task: Task, sender: ListManager) {
-    self.tasks.insert(task, at: 0)
+  func didUpdateData() {
     DispatchQueue.main.async {
       self.tableView.reloadData()
     }

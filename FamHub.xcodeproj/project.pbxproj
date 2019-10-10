@@ -11,14 +11,20 @@
 		1B0E8CD42329C378005DCE3E /* DesignableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0E8CD32329C378005DCE3E /* DesignableView.swift */; };
 		1B0E8CD6232ABB87005DCE3E /* ListDetail_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0E8CD5232ABB87005DCE3E /* ListDetail_VC.swift */; };
 		1B0E8CD8232AD67A005DCE3E /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0E8CD7232AD67A005DCE3E /* TaskCellView.swift */; };
-		1B202EFE2332C66900002EFF /* FHURLSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202EFD2332C66900002EFF /* FHURLSessionMock.swift */; };
 		1B202F002332CDE800002EFF /* ListManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202EFF2332CDE800002EFF /* ListManagerTests.swift */; };
 		1B202F042334178C00002EFF /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202F032334178C00002EFF /* Service.swift */; };
 		1B202F072334346300002EFF /* ServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202F052334341300002EFF /* ServiceMock.swift */; };
 		1B7299C22329642A00218BBF /* ListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7299C12329642A00218BBF /* ListCellView.swift */; };
+		1B9667E0233C143C002ECA06 /* DataSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9667DF233C143C002ECA06 /* DataSync.swift */; };
+		1B9667E3233C1A10002ECA06 /* FamHub.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1B9667E1233C1A10002ECA06 /* FamHub.xcdatamodeld */; };
+		1B9667E523403CE7002ECA06 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9667E423403CE7002ECA06 /* Date+Extension.swift */; };
+		1B9667E7234303F7002ECA06 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9667E6234303F7002ECA06 /* Utils.swift */; };
+		1B9667E92345BA44002ECA06 /* DataSyncResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9667E82345BA44002ECA06 /* DataSyncResponse.swift */; };
 		1BE0BBA32326DBC400B18F20 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0BBA22326DBC400B18F20 /* Task.swift */; };
 		1BE0BBA52327233100B18F20 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0BBA42327233100B18F20 /* List.swift */; };
 		1BE0BBA923272B7600B18F20 /* ListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0BBA823272B7600B18F20 /* ListManager.swift */; };
+		1BE17EA1234BBE5300702BAF /* FamHub.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1B9667E1233C1A10002ECA06 /* FamHub.xcdatamodeld */; };
+		1BE17EA3234BE41F00702BAF /* CodingUserInfoKey+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE17EA2234BE41F00702BAF /* CodingUserInfoKey+Util.swift */; };
 		1BE1CFF323231B6700EC3FD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1CFF223231B6700EC3FD2 /* AppDelegate.swift */; };
 		1BE1CFF523231B6700EC3FD2 /* Lists_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE1CFF423231B6700EC3FD2 /* Lists_VC.swift */; };
 		1BE1CFF823231B6700EC3FD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BE1CFF623231B6700EC3FD2 /* Main.storyboard */; };
@@ -51,14 +57,19 @@
 		1B0E8CD32329C378005DCE3E /* DesignableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableView.swift; sourceTree = "<group>"; };
 		1B0E8CD5232ABB87005DCE3E /* ListDetail_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetail_VC.swift; sourceTree = "<group>"; };
 		1B0E8CD7232AD67A005DCE3E /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
-		1B202EFD2332C66900002EFF /* FHURLSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FHURLSessionMock.swift; sourceTree = "<group>"; };
 		1B202EFF2332CDE800002EFF /* ListManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManagerTests.swift; sourceTree = "<group>"; };
 		1B202F032334178C00002EFF /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		1B202F052334341300002EFF /* ServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceMock.swift; sourceTree = "<group>"; };
 		1B7299C12329642A00218BBF /* ListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCellView.swift; sourceTree = "<group>"; };
+		1B9667DF233C143C002ECA06 /* DataSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSync.swift; sourceTree = "<group>"; };
+		1B9667E2233C1A10002ECA06 /* FamHub.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FamHub.xcdatamodel; sourceTree = "<group>"; };
+		1B9667E423403CE7002ECA06 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		1B9667E6234303F7002ECA06 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		1B9667E82345BA44002ECA06 /* DataSyncResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSyncResponse.swift; sourceTree = "<group>"; };
 		1BE0BBA22326DBC400B18F20 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		1BE0BBA42327233100B18F20 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		1BE0BBA823272B7600B18F20 /* ListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManager.swift; sourceTree = "<group>"; };
+		1BE17EA2234BE41F00702BAF /* CodingUserInfoKey+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CodingUserInfoKey+Util.swift"; sourceTree = "<group>"; };
 		1BE1CFEF23231B6700EC3FD2 /* FamHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FamHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BE1CFF223231B6700EC3FD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BE1CFF423231B6700EC3FD2 /* Lists_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lists_VC.swift; sourceTree = "<group>"; };
@@ -106,8 +117,10 @@
 		1B202EFC2332C5FB00002EFF /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				1B202EFD2332C66900002EFF /* FHURLSessionMock.swift */,
 				1B202F052334341300002EFF /* ServiceMock.swift */,
+				1B9667E423403CE7002ECA06 /* Date+Extension.swift */,
+				1BE17EA2234BE41F00702BAF /* CodingUserInfoKey+Util.swift */,
+				1B9667E6234303F7002ECA06 /* Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -131,6 +144,8 @@
 				1BE0BBA22326DBC400B18F20 /* Task.swift */,
 				1BE0BBA42327233100B18F20 /* List.swift */,
 				1BE0BBA823272B7600B18F20 /* ListManager.swift */,
+				1B9667DF233C143C002ECA06 /* DataSync.swift */,
+				1B9667E82345BA44002ECA06 /* DataSyncResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -169,6 +184,7 @@
 				1BE1CFF923231B6A00EC3FD2 /* Assets.xcassets */,
 				1BE1CFFB23231B6A00EC3FD2 /* LaunchScreen.storyboard */,
 				1BE1CFFE23231B6A00EC3FD2 /* Info.plist */,
+				1B9667E1233C1A10002ECA06 /* FamHub.xcdatamodeld */,
 			);
 			path = FamHub;
 			sourceTree = "<group>";
@@ -389,7 +405,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B202EFE2332C66900002EFF /* FHURLSessionMock.swift in Sources */,
+				1B9667E0233C143C002ECA06 /* DataSync.swift in Sources */,
 				1B202F042334178C00002EFF /* Service.swift in Sources */,
 				1B0E8CD8232AD67A005DCE3E /* TaskCellView.swift in Sources */,
 				1BE0BBA32326DBC400B18F20 /* Task.swift in Sources */,
@@ -398,10 +414,15 @@
 				1BE1CFF523231B6700EC3FD2 /* Lists_VC.swift in Sources */,
 				1B0E8CD22329A8C7005DCE3E /* AddListModal_VC.swift in Sources */,
 				1BE1D026232481A500EC3FD2 /* NetworkOperation.swift in Sources */,
+				1B9667E523403CE7002ECA06 /* Date+Extension.swift in Sources */,
 				1BE0BBA52327233100B18F20 /* List.swift in Sources */,
+				1B9667E7234303F7002ECA06 /* Utils.swift in Sources */,
 				1BE1CFF323231B6700EC3FD2 /* AppDelegate.swift in Sources */,
+				1BE17EA3234BE41F00702BAF /* CodingUserInfoKey+Util.swift in Sources */,
 				1B0E8CD42329C378005DCE3E /* DesignableView.swift in Sources */,
+				1B9667E92345BA44002ECA06 /* DataSyncResponse.swift in Sources */,
 				1B0E8CD6232ABB87005DCE3E /* ListDetail_VC.swift in Sources */,
+				1B9667E3233C1A10002ECA06 /* FamHub.xcdatamodeld in Sources */,
 				1B202F072334346300002EFF /* ServiceMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +431,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BE17EA1234BBE5300702BAF /* FamHub.xcdatamodeld in Sources */,
 				1B202F002332CDE800002EFF /* ListManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -733,6 +755,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1B9667E1233C1A10002ECA06 /* FamHub.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1B9667E2233C1A10002ECA06 /* FamHub.xcdatamodel */,
+			);
+			currentVersion = 1B9667E2233C1A10002ECA06 /* FamHub.xcdatamodel */;
+			path = FamHub.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1BE1CFE723231B6700EC3FD2 /* Project object */;
 }

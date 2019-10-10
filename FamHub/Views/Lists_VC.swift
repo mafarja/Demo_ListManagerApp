@@ -12,15 +12,13 @@ import Floaty
 class Lists_VC: UIViewController {
   @IBOutlet weak var tableView: UITableView!
   
-  let listManager = ListManager(service: NetworkOperation())
-  var lists = [List]()
+  let listManager = ListManager()
   var selectedList: List?
   
   override func viewDidLoad() {
     super.viewDidLoad()
     configUI()
     configActionButton()
-    displayLists()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -45,33 +43,21 @@ class Lists_VC: UIViewController {
   @IBAction func unwindToLists(segue:UIStoryboardSegue) {
     
   }
-  
-  func displayLists() {
-    listManager.getLists {
-      (lists, error) in
-      if let lists = lists {
-        self.lists = lists.reversed()  // newest on top
-        DispatchQueue.main.async {
-          self.tableView.reloadData()
-        }
-      }
-    }
-  }
 }
 
 extension Lists_VC: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.lists.count
+    return self.listManager.getLists().count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as! ListCellView
-    cell.label_listName.text =  self.lists[indexPath.row].name
+    cell.label_listName.text =  self.listManager.getLists()[indexPath.row].list_name
     return cell
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    self.selectedList = self.lists[indexPath.row]
+    self.selectedList = self.listManager.getLists()[indexPath.row]
     self.performSegue(withIdentifier: "showListDetail", sender: self)
   }
   
@@ -89,9 +75,7 @@ extension Lists_VC: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension Lists_VC: ListManagerDelegate {
-  func didAddList(list: List, sender: ListManager) {
-    print("get fired")
-    self.lists.insert(list, at: 0)
+  func didUpdateData() {
     DispatchQueue.main.async {
       self.tableView.reloadData()
     }
