@@ -14,7 +14,7 @@ protocol DataSyncDelegate {
 }
 
 class DataSync: NSObject {
-  let service = NetworkOperation()
+  var service: FHService!
   var delegate: DataSyncDelegate?
   static var lastSync: Date?
   
@@ -24,29 +24,36 @@ class DataSync: NSObject {
     return self.persistentContainer.newBackgroundContext()
   }()
   
-  init(container: NSPersistentContainer, service: Service) {
+  init(container: NSPersistentContainer, service: FHService) {
     super.init()
     self.persistentContainer = container
+    self.service = service
   }
   
   convenience override init() {
     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
       fatalError("Cannot get shared app delegate")
     }
-    let service = NetworkOperation()
+    let service = FamHubAPI()
     self.init(container: appDelegate.persistentContainer, service: service)
   }
   
-  func sync() {
+  func sync(_ completion: @escaping (Error?) -> Void) {
     
     getLocalItemsWithModifiedDateGreaterThanLastSync() { (lists, tasks) in
+      
+      
       self.postItemsToServerAndFetchModifiedItems(lists: lists, tasks: tasks) {
-        (lists, tasks, error)  in
+        (error)  in
+        if (error != nil) {
+          completion(error)
+        }
         
         if let delegate = self.delegate {
           DataSync.lastSync = Date()
           delegate.didCompleteDataSync()
         }
+        completion(nil)
       }
     }
   }
@@ -54,41 +61,37 @@ class DataSync: NSObject {
   private func getLocalItemsWithModifiedDateGreaterThanLastSync(_ completion: @escaping ([List], [Task]) -> Void) {
     var lists = [List]()
     var tasks = [Task]()
-  
-    let managedContext = self.persistentContainer.viewContext
+
+    var fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
     
-    DispatchQueue.global(qos: .background).async {
-      var fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
-      
-      if let lastSyncDate = DataSync.lastSync {
-        fetchRequest.predicate = NSPredicate(format: "date_modified > %@", lastSyncDate as CVarArg)
-      }
-      
-      do {
-        lists = try managedContext.fetch(fetchRequest) as! [List]
-        
-      } catch let error as NSError {
-        print("Could not fetch. \(error), \(error.userInfo)")
-      }
-      
-      // get tasks
-      fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
-      
-      if let lastSyncDate = DataSync.lastSync {
-        fetchRequest.predicate = NSPredicate(format: "date_modified > %@", lastSyncDate as CVarArg)
-      }
-      
-      do {
-        tasks = try managedContext.fetch(fetchRequest) as! [Task]
-        
-       } catch let error as NSError {
-         print("Could not fetch. \(error), \(error.userInfo)")
-       }
-      completion(lists, tasks)
+    if let lastSyncDate = DataSync.lastSync {
+      fetchRequest.predicate = NSPredicate(format: "date_modified > %@", lastSyncDate as CVarArg)
     }
+    
+    do {
+      lists = try backgroundContext.fetch(fetchRequest) as! [List]
+      
+    } catch let error as NSError {
+      print("Could not fetch. \(error), \(error.userInfo)")
+    }
+    
+    // get tasks
+    fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
+    
+    if let lastSyncDate = DataSync.lastSync {
+      fetchRequest.predicate = NSPredicate(format: "date_modified > %@", lastSyncDate as CVarArg)
+    }
+    
+    do {
+      tasks = try backgroundContext.fetch(fetchRequest) as! [Task]
+      
+     } catch let error as NSError {
+       print("Could not fetch. \(error), \(error.userInfo)")
+     }
+    completion(lists, tasks)
   }
   
-  private func postItemsToServerAndFetchModifiedItems(lists: [List], tasks: [Task], completion: @escaping ([List], [Task], Error?) -> Void) {
+  private func postItemsToServerAndFetchModifiedItems(lists: [List], tasks: [Task], completion: @escaping (Error?) -> Void) {
     
     var listObjArr: [[String: Any]] =  []
     var taskObjArr: [[String: Any]] = []
@@ -138,76 +141,73 @@ class DataSync: NSObject {
       taskObjArr.append(taskObj)
     }
     
-    let params = [
-      "lists": listObjArr,
-      "tasks": taskObjArr
-    ]
-   
-    let  url = URL(string: glb_Domain + "/sync")!
     
-    self.service.sendHttpPostRequest(url: url, params: params as [String : Any], completion: {
-      (data, error) in
+    self.service.sync(lists: listObjArr, tasks: taskObjArr) { (data, error) in
       
-      let lists = [List]()
-      let tasks = [Task]()
       
       guard let data = data,
         error == nil else {
-          completion(lists, tasks, error)
+          completion(error)
           return
       }
+      let dataString = String(data: data, encoding: .utf8)
+      print("yoyos", dataString)
       
       do {
         guard let codingUserInfoKeyManagedObjectContext = CodingUserInfoKey.managedObjectContext else {
+          
+          
+          
           fatalError()
         }
         
         self.clearStorage()
         
-        let managedObjectContext = self.persistentContainer.viewContext
+        let managedObjectContext = self.backgroundContext
         
         let decoder = JSONDecoder()
         
-        decoder.userInfo[codingUserInfoKeyManagedObjectContext] = managedObjectContext
+        decoder.userInfo[codingUserInfoKeyManagedObjectContext] = self.backgroundContext
         decoder.dateDecodingStrategy = .formatted(DateFormatter.iso8601Full)
-        let dataSyncResponse = try decoder.decode(DataSyncResponse.self, from: data)
         
         do {
-          try managedObjectContext.save()
+          let dataSyncResponse = try decoder.decode(DataSyncResponse.self, from: data)
+        } catch let error {
+          print(error)
+          
+        }
+        
+        
+        do {
+          try self.backgroundContext.save()
         } catch let error {
           print("Error: Could not save context \(error)")
         }
-       
-        let lists = dataSyncResponse.lists
-        let tasks = dataSyncResponse.tasks
         
-        completion(lists, tasks, nil)
+        completion(nil)
       } catch let error {
         print(error)
-        completion(lists, tasks, NSError(domain: "Error: Decoding failed", code: 0, userInfo: nil))
+        completion(error)
         return
       }
-    })
+    }
+  
   }
   
   func clearStorage() {
-    //clear lists
-    let managedObjectContext = persistentContainer.viewContext
-    let fetchListRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "List")
-    let batchDeleteListRequest = NSBatchDeleteRequest(fetchRequest: fetchListRequest)
-    do {
-        try managedObjectContext.execute(batchDeleteListRequest)
-    } catch let error as NSError {
-        print(error)
+    
+    let fetchRequestList:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest<NSFetchRequestResult>(entityName: "List")
+    let lists = try! backgroundContext.fetch(fetchRequestList)
+    for case let obj as NSManagedObject in lists {
+      backgroundContext.delete(obj)
     }
-  
-    // now clear tasks
-    let fetchTaskRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
-    let batchDeleteTaskRequest = NSBatchDeleteRequest(fetchRequest: fetchTaskRequest)
-    do {
-        try managedObjectContext.execute(batchDeleteTaskRequest)
-    } catch let error as NSError {
-        print(error)
+    
+    let fetchRequestTask:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
+    
+    let tasks = try! backgroundContext.fetch(fetchRequestTask)
+    for case let obj as NSManagedObject in tasks {
+      backgroundContext.delete(obj)
     }
+    
   }
 }

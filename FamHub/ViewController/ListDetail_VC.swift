@@ -10,7 +10,8 @@ import UIKit
 
 class ListDetail_VC: UIViewController {
   
-  var list: List?
+  var taskViewModels: [TaskViewModel] = []
+  var listViewModel: ListViewModel?
   let listManager = ListManager()
   
   @IBOutlet weak var tableView: UITableView!
@@ -20,16 +21,26 @@ class ListDetail_VC: UIViewController {
     super.viewDidLoad()
     ListManager.delegate = self
     configUI()
+    fetchTasks()
+    tableView.reloadData()
   }
   
   func configUI() {
-    self.title = self.list?.list_name
+    self.title = self.listViewModel?.name
+  }
+  
+  func fetchTasks() {
+    let tasks = self.listManager.getTasks(list_id: listViewModel!.id)
+    self.taskViewModels = tasks.map({
+      return TaskViewModel(task: $0)
+    })
+    self.tableView.reloadData()
   }
   
   func createTask() {
     guard let description = self.textField_taskDescription.text,
       description.count > 0,
-      let list_id = self.list?.id else {
+      let list_id = self.listViewModel?.id else {
       return
     }
     
@@ -41,17 +52,17 @@ class ListDetail_VC: UIViewController {
 
 extension ListDetail_VC: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard let list_id = self.list?.id else {
+    guard let list_id = self.listViewModel?.id else {
       print("Error: List has not been set")
       fatalError("List has not been set")
     }
-    return self.listManager.getTasks(list_id: list_id).count
+    return self.taskViewModels.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCellView", for: indexPath) as! TaskCellView
-    if let list_id = self.list?.id {
-      cell.label_description.text = self.listManager.getTasks(list_id: list_id)[indexPath.row].task_description
+    if let list_id = self.listViewModel?.id {
+      cell.taskViewModel = self.taskViewModels[indexPath.row]
     }
     return cell
   }
@@ -68,6 +79,7 @@ extension ListDetail_VC: UITextFieldDelegate {
 extension ListDetail_VC: ListManagerDelegate {
   func didUpdateData() {
     DispatchQueue.main.async {
+      self.fetchTasks()
       self.tableView.reloadData()
     }
   }

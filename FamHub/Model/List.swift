@@ -36,6 +36,8 @@ class List: NSManagedObject, Codable {
         let entity = NSEntityDescription.entity(forEntityName: "List", in: managedObjectContext) else {
         fatalError("Failed to decode List")
     }
+    
+  
 
     self.init(entity: entity, insertInto: managedObjectContext)
 

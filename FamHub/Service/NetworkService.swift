@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Service {
+protocol NetworkService {
   func sendHttpGetRequest(url: URL, completion: @escaping (Data?, Error?) -> Void)
   func sendHttpPostRequest(url: URL, params: [String: Any], completion: @escaping (Data?, Error?) -> Void)
 }

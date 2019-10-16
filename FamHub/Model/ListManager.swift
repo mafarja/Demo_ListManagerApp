@@ -30,7 +30,9 @@ class ListManager: NSObject {
     
     if let dataSync = self.dataSync {
       if DataSync.lastSync == nil {
-        dataSync.sync()
+        dataSync.sync() { (error) in
+          
+        }
       }
     }
   }
@@ -99,7 +101,7 @@ class ListManager: NSObject {
     let sort = NSSortDescriptor(key: #keyPath(Task.posted), ascending: false)
     fetchRequest.sortDescriptors = [sort]
     
-    let tasks = (try? persistentContainer.viewContext.fetch(fetchRequest)) as! [Task]
+    let tasks = (try? backgroundContext.fetch(fetchRequest)) as! [Task]
     
     return tasks
   }
@@ -110,7 +112,9 @@ class ListManager: NSObject {
         try backgroundContext.save()
         
         if let dataSync = self.dataSync {
-          dataSync.sync()
+          dataSync.sync() { (error) in
+            
+          }
         }
         
         if let delegate = ListManager.delegate {

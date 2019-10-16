@@ -10,4 +10,10 @@ import UIKit
 
 class ListCellView: UITableViewCell {
   @IBOutlet weak var label_listName: UILabel!
+  
+  var listViewModel: ListViewModel! {
+    didSet {
+      label_listName.text = listViewModel.name
+    }
+  }
 }

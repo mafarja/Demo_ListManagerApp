@@ -10,4 +10,10 @@ import UIKit
 
 class TaskCellView: UITableViewCell {
   @IBOutlet weak var label_description: UILabel!
+  
+  var taskViewModel: TaskViewModel! {
+    didSet {
+      label_description.text = taskViewModel.description
+    }
+  }
 }

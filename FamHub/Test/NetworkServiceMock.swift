@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ServiceMock: Service {
+class NetworkServiceMock: NetworkService {
   
   
   var data: Data?
@@ -21,13 +21,12 @@ class ServiceMock: Service {
     print("sendHttpGetRequest called with url \(url)")
     
     completion(data, nil)
-    
   }
   
   func sendHttpPostRequest(url: URL, params: [String : Any], completion: @escaping (Data?, Error?) -> Void) {
     print("sendHttpPostRequest called with url \(url)")
-    completion(data, nil)
     
+    completion(data, nil)
   }
   
   

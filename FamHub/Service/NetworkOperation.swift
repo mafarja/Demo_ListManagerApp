@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NetworkOperation: Service {
+class NetworkOperation: NetworkService {
   
   
   static var session = URLSession(configuration: .default)
