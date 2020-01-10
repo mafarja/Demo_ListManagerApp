@@ -9,4 +9,4 @@ Aside from showcasing my design opinion, this app also:
 - Utilizes CoreData for caching and offline functionality
 - Dependency injection
 - Is testable and includes a number of unit tests
-- Follows architectural principles of CLEAN and SIMPLE design
+- Follows architectural principles of CLEAN and SOLID design
