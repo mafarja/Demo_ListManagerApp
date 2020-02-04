@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var Task = new Schema({
   description: String,
   status: String,
+  completed: Boolean,
   posted: {
   	type: Date,
   	default: Date.now

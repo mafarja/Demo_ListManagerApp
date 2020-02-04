@@ -60,32 +60,32 @@ class ListManagerTests: XCTestCase {
     XCTAssertEqual(lists.count, 6)
   }
   
-  func test_getTasks() {
-    // given
-    _ = insertTask(description: "1", list_id: "123")
-    _ = insertTask(description: "2", list_id: "123")
-    _ = insertTask(description: "3", list_id: "123")
-    
-    // when
-    let tasks = sut.getTasks(list_id: "123")
-    
-    // then
-    XCTAssertEqual(tasks.count, 3)
-  }
-  
-  func test_addTask() {
-    // given
-    _ = insertTask(description: "1", list_id: "123")
-    _ = insertTask(description: "2", list_id: "123")
-    _ = insertTask(description: "3", list_id: "123")
-    
-    // when
-    _ = sut.addTask(description: "4", list_id: "123")
-    
-    // then
-    let tasks = sut.getTasks(list_id: "123")
-    XCTAssertEqual(tasks.count, 4)
-  }
+//  func test_getTasks() {
+//    // given
+//    _ = insertTask(description: "1", list_id: "123")
+//    _ = insertTask(description: "2", list_id: "123")
+//    _ = insertTask(description: "3", list_id: "123")
+//
+//    // when
+//    let tasks = sut.getTasks(list_id: "123")
+//
+//    // then
+//    XCTAssertEqual(tasks.count, 3)
+//  }
+//
+//  func test_addTask() {
+//    // given
+//    _ = insertTask(description: "1", list_id: "123")
+//    _ = insertTask(description: "2", list_id: "123")
+//    _ = insertTask(description: "3", list_id: "123")
+//
+//    // when
+//    _ = sut.addTask(description: "4", list_id: "123")
+//
+//    // then
+//    let tasks = sut.getTasks(list_id: "123")
+//    XCTAssertEqual(tasks.count, 4)
+//  }
   
   // stub functions
   func insertList( name: String ) -> List? {
@@ -102,20 +102,20 @@ class ListManagerTests: XCTestCase {
     return obj as? List
   }
   
-  func insertTask( description: String, list_id: String ) -> Task? {
-    let obj = NSEntityDescription.insertNewObject(forEntityName: "Task", into: mockPersistantContainer.viewContext)
-
-    obj.setValue(description, forKey: "task_description")
-    obj.setValue(list_id, forKey: "list_id")
-    
-    do {
-        try mockPersistantContainer.viewContext.save()
-    }  catch {
-        print("create fakes error \(error)")
-    }
-
-    return obj as? Task
-  }
+//  func insertTask( description: String, list_id: String ) -> Task? {
+//    let obj = NSEntityDescription.insertNewObject(forEntityName: "Task", into: mockPersistantContainer.viewContext)
+//
+//    obj.setValue(description, forKey: "task_description")
+//    obj.setValue(list_id, forKey: "list_id")
+//    
+//    do {
+//        try mockPersistantContainer.viewContext.save()
+//    }  catch {
+//        print("create fakes error \(error)")
+//    }
+//
+//    return obj as? Task
+//  }
   
   func flushData() {
           

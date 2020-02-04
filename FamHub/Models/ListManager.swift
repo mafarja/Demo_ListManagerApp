@@ -1,0 +1,78 @@
+//
+//  ListManager.swift
+//  FamHub
+//
+//  Created by Marcelo Farjalla on 9/9/19.
+//  Copyright © 2019 StackRank, LLC. All rights reserved.
+//
+
+import Foundation
+
+class ListManager {
+  
+  let repository = ListRepository()
+    
+  static var lists: Observable<[List]> = Observable<[List]>([])
+  
+  init() {
+    
+  }
+  
+  func addList(name: String, description: String?, completion: @escaping (List?) -> Void) {
+    self.createList(name: name, description: description) { list, error in
+      guard let list = list,
+        error == nil,
+        self.repository.create(a: list) else {
+          completion(nil)
+          return
+      }
+      
+      ListManager.lists.value.insert(list, at: 0)
+      
+      completion(list)
+    }
+    
+  }
+  
+  private func createList(name: String, description: String?, completion: @escaping (List?, Error?) -> Void) {
+    
+    
+    User().getUserId { (user_id) in
+      guard let user_id = user_id else {
+        completion(nil, NSError(domain: "Could not obtain CloudKit user id.", code: 0, userInfo: nil))
+        return
+      }
+      
+      
+      
+      let list = List(id: Utils().objectId(), name: name, user_id: user_id, description: description, created: Date(), date_modified: Date(), isArchived: false, tasks: nil)
+      
+      if let description = description {
+        list.description = description
+      }
+      
+      completion(list, nil)
+      
+    }
+  }
+  
+  func getLists() {
+    
+    ListManager.lists.value = self.repository.getAll(identifier: nil)
+    
+  }
+  
+  func archive(list_id: String) {
+    
+    for (index, list) in ListManager.lists.value.enumerated() {
+    
+      if list.id == list_id {
+        list.isArchived = true
+        list.date_modified = Date()
+        guard self.repository.update(a: list) else { return }
+        self.getLists()
+      }
+    }
+  }
+}
+

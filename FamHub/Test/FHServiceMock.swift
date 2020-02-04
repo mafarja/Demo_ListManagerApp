@@ -10,6 +10,7 @@ import Foundation
 
 class FHServiceMock: FHService {
   
+  
   var data: [String: Any]?
   
   func getLists() {
@@ -28,7 +29,7 @@ class FHServiceMock: FHService {
     
   }
   
-  func sync(lists: [[String : Any]], tasks: [[String : Any]], completion: @escaping (Data?, Error?) -> Void) {
+  func sync(user_id: String?, lastSync: Date?, lists: [[String : Any]], completion: @escaping (Data?, Error?) -> Void) {
     
     guard var dataDict = self.data,
       var remoteLists = (dataDict["lists"] as? [[String: Any]]),
@@ -39,11 +40,11 @@ class FHServiceMock: FHService {
     
     
     remoteLists.append(contentsOf: lists)
-    remoteTasks.append(contentsOf: tasks)
+    
     dataDict["lists"] = remoteLists
     dataDict["tasks"] = remoteTasks
     
-    print(dataDict)
+    
     
     guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDict, options: []) else {
       

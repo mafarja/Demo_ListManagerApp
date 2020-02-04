@@ -5,11 +5,12 @@ var async = require('async');
 var app = express();
 
 mongoose.connect('mongodb://localhost/famHub');
-require('./models/list.server.model');
 require('./models/task.server.model');
+require('./models/list.server.model');
 
-var List = require('mongoose').model('List');
 var Task = require('mongoose').model('Task');
+var List = require('mongoose').model('List');
+
 var ObjectId = require('mongoose').Types.ObjectId;
 
 app.use(bodyParser.json());
@@ -21,6 +22,9 @@ app.get('/', function(req, res, next) {
 
 var postTasks = function(taskArr, callback) {
 
+  console.log("tasksToPost");
+  console.log(taskArr);
+
 	 async.eachSeries(taskArr, function(obj, cb) {
 
   	Task.update({ "_id": obj._id },
@@ -29,6 +33,7 @@ var postTasks = function(taskArr, callback) {
   				"description": obj.description,
   				"posted": obj.posted,
   				"status": obj.status,
+          "completed": obj.completed,
   				"list_id": obj.list_id,
   				"date_modified": obj.date_modified
 
@@ -59,15 +64,21 @@ var postTasks = function(taskArr, callback) {
 
 var postLists = function(listArr, callback) {
 
+  console.log("in postLists")
+  console.log(listArr)
+
 	 async.eachSeries(listArr, function(obj, cb) {
 
   	List.update({ "_id": obj._id },
   		{ "$set": 
   			{ "name": obj.name,
   				"description": obj.description,
-  				"created": obj.created,
+  				"created": new Date(obj.created),
   				"status": obj.status,
-  				"date_modified": obj.date_modified
+  				"date_modified": new Date(obj.date_modified),
+          "user_id": obj.user_id,
+          "isArchived": obj.isArchived,
+          "tasks": obj.tasks
   			}
   		}, 
   		{ "upsert": true,
@@ -92,73 +103,133 @@ var postLists = function(listArr, callback) {
   });
 }
 
-var getLists = function(callback) {
-	List.find({}, function(err, results) {
-		console.log("getLists" + results);
-  	callback(results);
-  });
+var getLists = function(user_id, lastSync, callback) {
+
+  if (lastSync != null) {
+    List.find({"user_id": user_id, "date_modified": { $gt: lastSync }}, function(err, results) {
+      callback(results)
+    });
+  } else {
+
+    console.log("in getLists with lastSync null")
+     List.find({"user_id": user_id}, function(err, results) {
+      
+      callback(results);
+    });
+  }
 }
 
-var getTasks = function(callback) {
-	Task.find({}, function(err, results) {
-		console.log("getTasks" + results);
-  	callback(results);
-  });
+var getTasks = function(lastSync, callback) {
+
+  if (lastSync != null) {
+    Task.find({"date_modified": { $gt: lastSync }}, function(err, results) {
+      console.log("getTasks" + results);
+      callback(results);
+    });
+  } else {
+    Task.find({}, function(err, results) {
+      console.log("getTasks" + results);
+      callback(results);
+    });
+  }
+
+	
 }
 
 app.post('/sync', function(req, res, next) {
-	var listArr = req.body["lists"];
-	var taskArr = req.body["tasks"];
+	
+  var user_id = req.body["user_id"];
+  var lastSync = req.body["lastSync"];
 
-	console.log(listArr)
-	console.log("help")
-	console.log(taskArr)
+	console.log("syncing...")
+  console.log(req.body)
+
+
+
+  // 1. Get server lists with date_modified gt lastSync
+  // 2. Get server 
 
 	async.series([
-		function(callback) {
-			console.log("Posting lists...")
-			postLists(listArr, function() {
-
-				callback();
-			})
-		},
-		function(callback) {
-			console.log("Posting tasks...")
-			postTasks(taskArr, function() {
-				callback()
-			})
-		},
-		function(callback) {
-			console.log("Getting lists...");
-			getLists(function(lists) {
-				console.log("in getLists callback..." + lists);
-				callback(null, lists);
-			})
-		},
-		function(callback) {
-			console.log("Getting tasks...");
-			getTasks(function(tasks) {
-				console.log("in getTasks callback..." + tasks);
-				callback(null, tasks);
-			})
-		}
-
-
+    function(callback) {
+      console.log("Getting lists...");
+      getLists(user_id, lastSync, function(lists) {
+        console.log("in getLists callback..." + lists);
+        return callback(null, lists);
+      })
+    }
+		
 	], function(err, results) {
-		console.log("async results " + results[2])
+		
+		var lists_Server = results[0];
 
-		var lists = results[2]
-		var tasks = results[3]
+    var lists_Client = req.body["lists"];
+
+    var listsToPost = [];
+    var listsToReturn = [];
+
+    clientList: for (var i = 0; i < lists_Client.length; i++) {
+      var listC = lists_Client[i];
+      
+      serverList: for (var j = lists_Server.length - 1; j >= 0; j--) {
+        var listS = lists_Server[j];
+        
+        if (listC["_id"] == listS._id) {
+          if (listC["date_modified"] > listS.date_modified) {
+            listsToPost.push(listC);
+          }
+          lists_Server.splice(j, 1);
+          continue clientList;
+         
+        }
+      }
+     
+      listsToPost.push(listC);
+    }
+
+    
+    if (listsToReturn.length == 0) {
+      listsToReturn = lists_Server
+    } else {
+      listsToReturn.concat(lists_Server);
+    }
+    
+
+
+    if (lastSync == null) {
+      listsToReturn = lists_Server;
+    }
 
 		var response = {
-			"lists": lists,
-			"tasks": tasks
+			"lists": listsToReturn
 		};
+
+    postLists(listsToPost, function() {
+      
+    });
+
+    console.log("responseooooo")
+    console.log(response)
+
+    res.status(200).json(response).end();
 	
-		res.status(200).json(response).end();
+		
 	});
 
 })
+
+// function(callback) {
+//       console.log("Posting lists...")
+//       postLists(lists_Client, function() {
+
+//         callback();
+//       })
+//     },
+//     function(callback) {
+//       console.log("Posting tasks...")
+//       postTasks(tasks_Client, function() {
+//         callback()
+//       })
+//     }
 
 app.post('/lists/:id/tasks', function(req, res, next) {
   console.log('post tasks')
@@ -203,6 +274,6 @@ app.get('/lists/', function(req, res, next) {
   });	
 });
 
-var server = app.listen(process.env.PORT || 8080, function () {
-    console.log('[' + new Date().toISOString() + ']', 'MASD Server app listening on port ', process.env.PORT || 8080);
+var server = app.listen(process.env.PORT || 3001, function () {
+    console.log('[' + new Date().toISOString() + ']', 'MASD Server app listening on port', process.env.PORT || 3001);
 });
