@@ -22,8 +22,6 @@ class ListRepository: Repository {
     
     let lists_MO = (try? CoreDataManager.backgroundContext.fetch(fetchRequest)) as! [List_ManagedObject]
     
-    
-    
     var lists: [List] = []
     
     for list_MO in lists_MO {
@@ -89,9 +87,12 @@ class ListRepository: Repository {
   
   func delete(a: List) -> Bool {
     
+    
     return false
 
   }
+  
+
   
   private func save() {
     if CoreDataManager.backgroundContext.hasChanges {

@@ -10,11 +10,20 @@ import Foundation
 
 class ListManager {
   
-  let repository = ListRepository()
+  var repository: ListRepository!
     
   static var lists: Observable<[List]> = Observable<[List]>([])
   
-  init() {
+  init(repository: ListRepository) {
+    
+    self.repository = repository
+    
+  }
+  
+  convenience init() {
+    
+    let repository = ListRepository()
+    self.init(repository: repository)
     
   }
   
@@ -31,19 +40,15 @@ class ListManager {
       
       completion(list)
     }
-    
   }
   
   private func createList(name: String, description: String?, completion: @escaping (List?, Error?) -> Void) {
-    
     
     User().getUserId { (user_id) in
       guard let user_id = user_id else {
         completion(nil, NSError(domain: "Could not obtain CloudKit user id.", code: 0, userInfo: nil))
         return
       }
-      
-      
       
       let list = List(id: Utils().objectId(), name: name, user_id: user_id, description: description, created: Date(), date_modified: Date(), isArchived: false, tasks: nil)
       
@@ -65,7 +70,6 @@ class ListManager {
   func archive(list_id: String) {
     
     for (index, list) in ListManager.lists.value.enumerated() {
-    
       if list.id == list_id {
         list.isArchived = true
         list.date_modified = Date()
