@@ -55,5 +55,4 @@ class Task: Codable {
     try container.encode(completed, forKey: .completed)
     try container.encode(posted, forKey: .posted)
   }
-
 }

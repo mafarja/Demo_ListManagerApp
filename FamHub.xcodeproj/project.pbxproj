@@ -179,7 +179,7 @@
 			path = Test;
 			sourceTree = "<group>";
 		};
-		1B7299C023286DDE00218BBF /* Views */ = {
+		1B7299C023286DDE00218BBF /* View */ = {
 			isa = PBXGroup;
 			children = (
 				1BE1CFF623231B6700EC3FD2 /* Main.storyboard */,
@@ -188,7 +188,7 @@
 				1BBC5B6C2385004700C53965 /* ListDetail */,
 				1B90A05A238764C000C516D0 /* AddListModal */,
 			);
-			path = Views;
+			path = View;
 			sourceTree = "<group>";
 		};
 		1B90A05A238764C000C516D0 /* AddListModal */ = {
@@ -207,7 +207,7 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
-		1B90A065238C57CE00C516D0 /* Repositories */ = {
+		1B90A065238C57CE00C516D0 /* Data */ = {
 			isa = PBXGroup;
 			children = (
 				1B90A06D238EFD8D00C516D0 /* Tasks */,
@@ -215,7 +215,7 @@
 				1B9667E1233C1A10002ECA06 /* FamHub.xcdatamodeld */,
 				1B90A063238C531800C516D0 /* Repository.swift */,
 			);
-			path = Repositories;
+			path = Data;
 			sourceTree = "<group>";
 		};
 		1B90A06C238C9CD600C516D0 /* Lists */ = {
@@ -291,7 +291,7 @@
 			path = Bluetooth;
 			sourceTree = "<group>";
 		};
-		1BE0BBA12326D99B00B18F20 /* Models */ = {
+		1BE0BBA12326D99B00B18F20 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				1BE0BBA823272B7600B18F20 /* ListManager.swift */,
@@ -299,7 +299,7 @@
 				1BE0BBA22326DBC400B18F20 /* Task.swift */,
 				1B20052323738228001ED8EE /* User.swift */,
 			);
-			path = Models;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		1BE1CFE623231B6700EC3FD2 = {
@@ -326,10 +326,10 @@
 		1BE1CFF123231B6700EC3FD2 /* FamHub */ = {
 			isa = PBXGroup;
 			children = (
-				1B7299C023286DDE00218BBF /* Views */,
-				1BE0BBA12326D99B00B18F20 /* Models */,
-				1B90A065238C57CE00C516D0 /* Repositories */,
-				1BE1D02023231BA600EC3FD2 /* Services */,
+				1B7299C023286DDE00218BBF /* View */,
+				1BE0BBA12326D99B00B18F20 /* Model */,
+				1B90A065238C57CE00C516D0 /* Data */,
+				1BE1D02023231BA600EC3FD2 /* Service */,
 				1BBC5B6D238500FC00C53965 /* Network */,
 				1B202EFC2332C5FB00002EFF /* Utils */,
 				1B4E379D23552FC00032FEAC /* Test */,
@@ -361,7 +361,7 @@
 			path = FamHubUITests;
 			sourceTree = "<group>";
 		};
-		1BE1D02023231BA600EC3FD2 /* Services */ = {
+		1BE1D02023231BA600EC3FD2 /* Service */ = {
 			isa = PBXGroup;
 			children = (
 				1B90A05F238C4FD400C516D0 /* CoreData */,
@@ -369,7 +369,7 @@
 				1BBC5B6F238502C100C53965 /* DataSync */,
 				1BBC5B6E2385029F00C53965 /* FamHubAPI */,
 			);
-			path = Services;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		91986B4515488B1A4B0BA6B5 /* Frameworks */ = {

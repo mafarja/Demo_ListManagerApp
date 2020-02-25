@@ -12,10 +12,8 @@ import Floaty
 class Lists_VC: UIViewController {
   @IBOutlet weak var tableView: UITableView!
   
-  
   let listMasterViewModel = ListMasterViewModel()
   var selectedList: ListViewModel?
-  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -44,20 +42,6 @@ class Lists_VC: UIViewController {
 
       }
       
-      
-//      self.loadListViewModels(lists: lists)
-      
-    }
-  }
-  
-//  func archive(indexPath: IndexPath, list: List) {
-//
-//    list.archive()
-//
-//    DispatchQueue.main.async {
-//      self.tableView.reloadRows(at: [indexPath], with: .fade)
-//    }
-//  }
   
   @objc func handleTap(_ sender: UITapGestureRecognizer) {
     self.performSegue(withIdentifier: "showAddListModal", sender: self)
@@ -110,7 +94,3 @@ extension Lists_VC: UITableViewDataSource, UITableViewDelegate {
      return [complete]
    }
 }
-
-
-
-

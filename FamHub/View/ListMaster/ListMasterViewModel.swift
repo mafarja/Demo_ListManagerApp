@@ -49,9 +49,6 @@ class ListMasterViewModel {
   
   private func loadListViewModels( lists: [List]) {
     
-    
-    
-    
     outer: for list in lists.reversed() {
       for (index, model) in self.listViewModels.value.enumerated().reversed() {
         if list.id == model.id {

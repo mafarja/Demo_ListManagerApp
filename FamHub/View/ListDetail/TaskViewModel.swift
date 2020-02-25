@@ -22,5 +22,4 @@ struct TaskViewModel {
     self.list_id = task.list_id
     self.completed = task.completed
   }
-  
 }

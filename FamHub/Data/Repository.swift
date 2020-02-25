@@ -17,5 +17,4 @@ protocol Repository {
   func create( a:T ) -> Bool
   func update( a:T ) -> Bool
   func delete( a:T ) -> Bool
-  
 }

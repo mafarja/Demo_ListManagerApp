@@ -13,7 +13,6 @@ import CoreData
 
 class Task_ManagedObject: NSManagedObject {
   
-  
   @NSManaged var id: String
   @NSManaged var task_description: String
   @NSManaged var completed: Bool

@@ -149,7 +149,3 @@ extension List: Equatable {
     
   }
 }
-
-
-
-

@@ -73,7 +73,6 @@ extension ListViewModel: Equatable {
     return lhs.list == rhs.list
   }
   
-  
 }
 
 extension ListViewModel {

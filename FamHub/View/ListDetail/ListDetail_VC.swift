@@ -42,14 +42,7 @@ class ListDetail_VC: UIViewController {
 
     self.textField_taskDescription.text = ""
   }
-  
 
-//  func undoTaskCompleted(task_id: String) {
-//    guard let list = self.list else { return }
-//    list.undoTaskComplated(task_id: task_id)
-//  }
-  
-  
 }
 
 extension ListDetail_VC {
@@ -130,6 +123,3 @@ extension ListDetail_VC: ListViewModelDelegate {
     self.tableView.reloadData()
   }
 }
-
-
-

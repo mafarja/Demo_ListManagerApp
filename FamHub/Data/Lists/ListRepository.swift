@@ -92,8 +92,6 @@ class ListRepository: Repository {
 
   }
   
-
-  
   private func save() {
     if CoreDataManager.backgroundContext.hasChanges {
       do {

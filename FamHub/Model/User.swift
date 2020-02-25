@@ -31,8 +31,6 @@ class User {
         return
       }
       completion(recordId.recordName)
-     
     }
-    
   }
 }
