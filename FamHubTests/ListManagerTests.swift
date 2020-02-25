@@ -1,34 +1,34 @@
+////
+////  ListManagerTests.swift
+////  FamHubTests
+////
+////  Created by Marcelo Farjalla on 9/18/19.
+////  Copyright © 2019 StackRank, LLC. All rights reserved.
+////
 //
-//  ListManagerTests.swift
-//  FamHubTests
+//import XCTest
+//import CoreData
+//@testable import FamHub
 //
-//  Created by Marcelo Farjalla on 9/18/19.
-//  Copyright © 2019 StackRank, LLC. All rights reserved.
-//
-
-import XCTest
-import CoreData
-@testable import FamHub
-
-class ListManagerTests: XCTestCase {
-  
-  var sut: ListManager!
-  var repository: ListRespositoryMock!
-  
-  override func setUp() {
-    super.setUp()
-    ListManager.lists.value = []
-    repository = ListRespositoryMock()
-    sut = ListManager(repository: repository)
-  }
-  
-  override func tearDown() {
-    repository = nil
-    sut = nil
-    
-    super.tearDown()
-  }
-  
+//class ListManagerTests: XCTestCase {
+//  
+//  var sut: ListManager!
+//  var repository: ListRespositoryMock!
+//  
+//  override func setUp() {
+//    super.setUp()
+//    ListManager.lists.value = []
+//    repository = ListRespositoryMock()
+//    sut = ListManager(repository: repository)
+//  }
+//  
+//  override func tearDown() {
+//    repository = nil
+//    sut = nil
+//    
+//    super.tearDown()
+//  }
+//  
 //  func test_GetLists() {
 //
 //    // given
@@ -45,46 +45,46 @@ class ListManagerTests: XCTestCase {
 //    XCTAssertEqual(lists.count, 5)
 //
 //  }
-  
-  func test_AddList() {
-    
-    // given
-    let promise = expectation(description: "List added")
-    
-    // when
-    sut.addList(name: "test", description: "test") { (list) in
-      
-    }
-    sut.addList(name: "test", description: "test") { (list) in
-      promise.fulfill()
-    }
-    
-    // then
-    
-    wait(for: [promise], timeout: 5)
-    
-    
-    func arraysMatch() -> Bool {
-        
-        for (index, list) in ListManager.lists.value.enumerated() {
-            guard list.id != nil,
-                list.name == listArr[index].name,
-                list.user_id != nil,
-                list.description == listArr[index].description,
-                list.created == listArr[index].created,
-                list.date_modified == listArr[index].date_modified,
-                list.isArchived == listArr[index].isArchived) else {
-                
-                return false
-            }
-        }
-        return return true
-    }
-    
-    XCTAssertTrue(arraysMatch())
-   
-  }
-  
+//  
+////  func test_AddList() {
+////
+////    // given
+////    let promise = expectation(description: "List added")
+////
+////    // when
+////    sut.addList(name: "test", description: "test") { (list) in
+////
+////    }
+////    sut.addList(name: "test", description: "test") { (list) in
+////      promise.fulfill()
+////    }
+////
+////    // then
+////
+////    wait(for: [promise], timeout: 5)
+////
+////
+////    func arraysMatch() -> Bool {
+////
+////        for (index, list) in ListManager.lists.value.enumerated() {
+////            guard list.id != nil,
+////                list.name == listArr[index].name,
+////                list.user_id != nil,
+////                list.description == listArr[index].description,
+////                list.created == listArr[index].created,
+////                list.date_modified == listArr[index].date_modified,
+////                list.isArchived == listArr[index].isArchived) else {
+////
+////                return false
+////            }
+////        }
+////        return return true
+////    }
+////
+////    XCTAssertTrue(arraysMatch())
+////
+////  }
+//  
 //  func test_getTasks() {
 //    // given
 //    _ = insertTask(description: "1", list_id: "123")
@@ -111,8 +111,8 @@ class ListManagerTests: XCTestCase {
 //    let tasks = sut.getTasks(list_id: "123")
 //    XCTAssertEqual(tasks.count, 4)
 //  }
-  
-  // stub functions
+//  
+//  // stub functions
 //  func insertList( name: String ) -> List? {
 //    let obj = NSEntityDescription.insertNewObject(forEntityName: "List", into: mockPersistantContainer.viewContext)
 //
@@ -126,7 +126,7 @@ class ListManagerTests: XCTestCase {
 //
 //    return obj as? List
 //  }
-  
+//  
 //  func insertTask( description: String, list_id: String ) -> Task? {
 //    let obj = NSEntityDescription.insertNewObject(forEntityName: "Task", into: mockPersistantContainer.viewContext)
 //
@@ -141,15 +141,15 @@ class ListManagerTests: XCTestCase {
 //
 //    return obj as? Task
 //  }
-  
-  func flushData() {
-          
-    
-
-  }
-  
-  
-  
+//  
+//  func flushData() {
+//          
+//    
+//
+//  }
+//  
+//  
+//  
 //  let fetchRequestList:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest<NSFetchRequestResult>(entityName: "List")
 //  let lists = try! mockPersistantContainer.viewContext.fetch(fetchRequestList)
 //  for case let obj as NSManagedObject in lists {
@@ -188,4 +188,4 @@ class ListManagerTests: XCTestCase {
 //      let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: type(of: self))] )!
 //      return managedObjectModel
 //  }()
-}
+//}

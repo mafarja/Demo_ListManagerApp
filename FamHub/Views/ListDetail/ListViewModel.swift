@@ -76,4 +76,22 @@ extension ListViewModel: Equatable {
   
 }
 
+extension ListViewModel {
+    /// The traditional method for rearranging rows in a table view.
+    func moveItem(at sourceIndex: Int, to destinationIndex: Int) {
+        guard sourceIndex != destinationIndex else { return }
+        
+        let taskViewModel = taskViewModels[sourceIndex]
+        taskViewModels.remove(at: sourceIndex)
+        taskViewModels.insert(taskViewModel, at: destinationIndex)
+    }
+    
+    /// The method for adding a new item to the table view's data model.
+    func addItem(_ taskViewModel: TaskViewModel, at index: Int) {
+        taskViewModels.insert(taskViewModel, at: index)
+    }
+}
+
+
+
 

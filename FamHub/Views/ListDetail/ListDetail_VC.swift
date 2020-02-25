@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 class ListDetail_VC: UIViewController {
   
@@ -20,6 +21,8 @@ class ListDetail_VC: UIViewController {
     self.listViewModel?.delegate = self
     configUI()
     
+    self.tableView.isEditing = true
+ 
   }
   
   func configUI() {
@@ -48,6 +51,27 @@ class ListDetail_VC: UIViewController {
   
   
 }
+
+extension ListDetail_VC {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
+        if let listViewModel = self.listViewModel {
+            let taskToMove = listViewModel.taskViewModels[sourceIndexPath.row]
+            listViewModel.taskViewModels.remove(at: sourceIndexPath.row)
+            
+            listViewModel.taskViewModels.insert(taskToMove, at: destinationIndexPath.row)
+        }
+        
+    }
+}
+
 
 extension ListDetail_VC: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -106,4 +130,6 @@ extension ListDetail_VC: ListViewModelDelegate {
     self.tableView.reloadData()
   }
 }
+
+
 
