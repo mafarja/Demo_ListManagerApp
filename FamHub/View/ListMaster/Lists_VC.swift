@@ -41,7 +41,9 @@ class Lists_VC: UIViewController {
               self.tableView.reloadData()
 
       }
-      
+    }
+     
+  }
   
   @objc func handleTap(_ sender: UITapGestureRecognizer) {
     self.performSegue(withIdentifier: "showAddListModal", sender: self)

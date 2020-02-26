@@ -20,3 +20,4 @@ class List_ManagedObject: NSManagedObject {
   @NSManaged var date_modified: Date
   @NSManaged var user_id: String
   @NSManaged var isArchived: Bool
+}
