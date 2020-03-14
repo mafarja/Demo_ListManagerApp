@@ -128,7 +128,6 @@ class DataSync: NSObject {
     
     var listObjArr: [[String: Any]] =  []
    
-    
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     dateFormatter.timeZone = TimeZone(identifier: "UTC")
@@ -159,6 +158,9 @@ class DataSync: NSObject {
         taskObj["posted"] = dateFormatter.string(from: task.posted)
         taskObj["_id"] = task.id
         taskObj["completed"] = task.completed
+        taskObj["order"] = task.order
+        taskObj["deleted"] = task.deleted
+        taskObj["date_modified"] = dateFormatter.string(from: task.date_modified ?? Date())
         taskObjArr.append(taskObj)
       }
       listObj["tasks"] = taskObjArr

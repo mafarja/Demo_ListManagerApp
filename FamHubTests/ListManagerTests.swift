@@ -6,85 +6,83 @@
 ////  Copyright © 2019 StackRank, LLC. All rights reserved.
 ////
 //
-//import XCTest
-//import CoreData
-//@testable import FamHub
-//
-//class ListManagerTests: XCTestCase {
-//  
-//  var sut: ListManager!
-//  var repository: ListRespositoryMock!
-//  
-//  override func setUp() {
-//    super.setUp()
-//    ListManager.lists.value = []
-//    repository = ListRespositoryMock()
-//    sut = ListManager(repository: repository)
-//  }
-//  
-//  override func tearDown() {
-//    repository = nil
-//    sut = nil
-//    
-//    super.tearDown()
-//  }
-//  
-//  func test_GetLists() {
-//
-//    // given
-//    _ = insertList(name: "1")
-//    _ = insertList(name: "2")
-//    _ = insertList(name: "3")
-//    _ = insertList(name: "4")
-//    _ = insertList(name: "5")
-//
-//    // when
-//    let lists = sut.getLists()
-//
-//    // then
-//    XCTAssertEqual(lists.count, 5)
-//
-//  }
-//  
-////  func test_AddList() {
-////
-////    // given
-////    let promise = expectation(description: "List added")
-////
-////    // when
-////    sut.addList(name: "test", description: "test") { (list) in
-////
-////    }
-////    sut.addList(name: "test", description: "test") { (list) in
-////      promise.fulfill()
-////    }
-////
-////    // then
-////
-////    wait(for: [promise], timeout: 5)
-////
-////
-////    func arraysMatch() -> Bool {
-////
-////        for (index, list) in ListManager.lists.value.enumerated() {
-////            guard list.id != nil,
-////                list.name == listArr[index].name,
-////                list.user_id != nil,
-////                list.description == listArr[index].description,
-////                list.created == listArr[index].created,
-////                list.date_modified == listArr[index].date_modified,
-////                list.isArchived == listArr[index].isArchived) else {
-////
-////                return false
-////            }
-////        }
-////        return return true
-////    }
-////
-////    XCTAssertTrue(arraysMatch())
-////
-////  }
-//  
+import XCTest
+@testable import StackList
+
+
+class ListManagerTests: XCTestCase {
+  
+  var sut: ListManager!
+  var repository: ListRepositoryMock!
+  
+  override func setUp() {
+    super.setUp()
+    
+    repository = ListRepositoryMock()
+    sut = ListManager(repository: repository)
+    ListManager.lists.value = []
+  }
+  
+  override func tearDown() {
+    repository = nil
+    sut = nil
+    
+    super.tearDown()
+  }
+  
+  func testListManager_getLists() {
+
+    // given
+    _ = insertList(name: "1")
+    _ = insertList(name: "2")
+    _ = insertList(name: "3")
+    _ = insertList(name: "4")
+    _ = insertList(name: "5")
+
+    // when
+    let lists = sut.getLists()
+
+    // then
+    XCTAssertEqual(ListManager.lists.value.count, 5)
+
+  }
+  
+  func testListManager_whenAddList_listsAddedToListsValue() {
+
+    // given
+    let promise = expectation(description: "List added")
+
+    // when
+    sut.addList(name: "test", description: "test") { (list) in
+
+    }
+    sut.addList(name: "test", description: "test") { (list) in
+      promise.fulfill()
+    }
+
+    // then
+
+    wait(for: [promise], timeout: 5)
+
+    XCTAssertEqual(ListManager.lists.value.count, 2)
+
+  }
+  
+  func testListManager_archiveList_listIsArchivedEqualsTrue() {
+    
+    // given
+    _ = insertList(name: "1")
+    let listToArchive = repository.dataArr[0]
+    
+    // when
+    sut.getLists()
+    sut.archive(list_id: listToArchive.id)
+    
+    // then
+    XCTAssertTrue(ListManager.lists.value[0].isArchived == true)
+    
+  }
+  
 //  func test_getTasks() {
 //    // given
 //    _ = insertTask(description: "1", list_id: "123")
@@ -111,28 +109,18 @@
 //    let tasks = sut.getTasks(list_id: "123")
 //    XCTAssertEqual(tasks.count, 4)
 //  }
-//  
-//  // stub functions
-//  func insertList( name: String ) -> List? {
-//    let obj = NSEntityDescription.insertNewObject(forEntityName: "List", into: mockPersistantContainer.viewContext)
 //
-//    obj.setValue(name, forKey: "list_name")
+  // stub functions
+  func insertList( name: String ) {
+    repository.dataArr.append(List(id: "123", name: name, user_id: "123", description: nil, created: Date(), date_modified: Date(), isArchived: false, tasks: nil))
+  }
 //
-//    do {
-//        try mockPersistantContainer.viewContext.save()
-//    }  catch {
-//        print("create fakes error \(error)")
-//    }
-//
-//    return obj as? List
-//  }
-//  
 //  func insertTask( description: String, list_id: String ) -> Task? {
 //    let obj = NSEntityDescription.insertNewObject(forEntityName: "Task", into: mockPersistantContainer.viewContext)
 //
 //    obj.setValue(description, forKey: "task_description")
 //    obj.setValue(list_id, forKey: "list_id")
-//    
+//
 //    do {
 //        try mockPersistantContainer.viewContext.save()
 //    }  catch {
@@ -141,15 +129,15 @@
 //
 //    return obj as? Task
 //  }
-//  
+//
 //  func flushData() {
-//          
-//    
+//
+//
 //
 //  }
-//  
-//  
-//  
+//
+//
+  
 //  let fetchRequestList:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest<NSFetchRequestResult>(entityName: "List")
 //  let lists = try! mockPersistantContainer.viewContext.fetch(fetchRequestList)
 //  for case let obj as NSManagedObject in lists {
@@ -163,29 +151,6 @@
 //  }
 //
 //    try! mockPersistantContainer.viewContext.save()
-//
-//  lazy var mockPersistantContainer: NSPersistentContainer = {
-//
-//      let container = NSPersistentContainer(name: "FamHub", managedObjectModel: self.managedObjectModel)
-//      let description = NSPersistentStoreDescription()
-//      description.type = NSInMemoryStoreType
-//      description.shouldAddStoreAsynchronously = false // Make it simpler in test env
-//
-//      container.persistentStoreDescriptions = [description]
-//      container.loadPersistentStores { (description, error) in
-//          // Check if the data store is in memory
-//          precondition( description.type == NSInMemoryStoreType )
-//
-//          // Check if creating container wrong
-//          if let error = error {
-//              fatalError("Create an in-mem coordinator failed \(error)")
-//          }
-//      }
-//      return container
-//  }()
-//
-//  lazy var managedObjectModel: NSManagedObjectModel = {
-//      let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: type(of: self))] )!
-//      return managedObjectModel
-//  }()
-//}
+
+  
+}

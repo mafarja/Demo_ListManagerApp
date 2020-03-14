@@ -29,8 +29,16 @@ class TaskRepository: Repository {
     var tasks: [Task] = []
     
     for task_MO in tasks_MO {
-      var task = Task(id: task_MO.id, description: task_MO.task_description, list_id: task_MO.list_id, completed: task_MO.completed, posted: task_MO.posted)
-      tasks.append(task)
+      
+      if let date_modified = task_MO.date_modified {
+        var task = Task(id: task_MO.id, description: task_MO.task_description, list_id: task_MO.list_id, completed: task_MO.completed, posted: task_MO.posted, order: task_MO.order, deleted: task_MO.deleted_LM, date_modified: date_modified)
+        tasks.append(task)
+      } else {
+        var task = Task(id: task_MO.id, description: task_MO.task_description, list_id: task_MO.list_id, completed: task_MO.completed, posted: task_MO.posted, order: task_MO.order, deleted: task_MO.deleted_LM, date_modified: Date())
+        tasks.append(task)
+      }
+      
+      
     }
     
     return tasks
@@ -38,7 +46,7 @@ class TaskRepository: Repository {
   
   func get(identifier: Int) -> Task? {
     
-    return Task(id: "213", description: "123", list_id: "123", completed: false, posted: Date())
+    return Task(id: "213", description: "123", list_id: "123", completed: false, posted: Date(), order: 0, deleted: false, date_modified: Date())
   }
   
   func create(a: Task) -> Bool {
@@ -74,6 +82,9 @@ class TaskRepository: Repository {
     task_ManagedObject.setValue(a.posted, forKeyPath: "posted")
     task_ManagedObject.setValue(a.list_id, forKey: "list_id")
     task_ManagedObject.setValue(a.completed, forKey: "completed")
+    task_ManagedObject.setValue(a.order, forKey: "order")
+    task_ManagedObject.setValue(a.deleted, forKey: "deleted_LM")
+    task_ManagedObject.setValue(a.date_modified, forKey: "date_modified")
 
     self.save()
     
@@ -83,7 +94,22 @@ class TaskRepository: Repository {
   
   func delete(a: Task) -> Bool {
     
-    return false
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
+    fetchRequest.predicate = NSPredicate(format: "id == %@", a.id)
+
+    let task_ManagedObjectArr = (try? CoreDataManager.backgroundContext.fetch(fetchRequest)) as! [Task_ManagedObject]
+    
+    if task_ManagedObjectArr.count == 0 {
+      return false
+    }
+    
+    let task_ManagedObject = task_ManagedObjectArr[0]
+      
+    CoreDataManager.backgroundContext.delete(task_ManagedObject)
+    
+    self.save()
+    
+    return true
 
   }
   

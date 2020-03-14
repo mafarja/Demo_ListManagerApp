@@ -16,7 +16,7 @@ class ListMasterViewModel {
   
   let listManager = ListManager()
   var title: String = ""
-  var listViewModels: Observable<[ListViewModel]> = Observable<[ListViewModel]>([])
+  static var listViewModels: Observable<[ListViewModel]> = Observable<[ListViewModel]>([])
   var showArchived: Bool = false
   
   init() {
@@ -47,31 +47,31 @@ class ListMasterViewModel {
     _ = listManager.getLists()
   }
   
+  
   private func loadListViewModels( lists: [List]) {
     
-    outer: for list in lists.reversed() {
-      for (index, model) in self.listViewModels.value.enumerated().reversed() {
-        if list.id == model.id {
-          
-            model.name = list.name
-            model.description = list.description ?? ""
-            model.isArchived = list.isArchived
-          
-          if model.isArchived == true {
-            self.listViewModels.value.remove(at: index)
-          }
-          continue outer
-        }
-      }
-      if list.isArchived == false {
-        self.listViewModels.value.insert(ListViewModel(list: list), at: 0)
-      }
-      
+    var listViewModelsArr: [ListViewModel] = []
+    for list in lists {
+      listViewModelsArr.append(ListViewModel(list: list))
     }
+    
+    let listViewModelsArrFiltered = listViewModelsArr.filter {
+      $0.isArchived == false
+    }
+    
+    ListMasterViewModel.listViewModels.value = listViewModelsArrFiltered
   
   }
   
   func archive(list_id: String) {
     self.listManager.archive(list_id: list_id)
   }
+  
+  func moveList(listViewModel: ListViewModel, removeAtIndex: Int, insertAtIndex: Int) {
+    
+    ListMasterViewModel.listViewModels.value.remove(at: removeAtIndex)
+    ListMasterViewModel.listViewModels.value.insert(listViewModel, at: insertAtIndex)
+    
+  }
+  
 }

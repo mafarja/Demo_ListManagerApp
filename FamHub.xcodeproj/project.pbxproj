@@ -23,6 +23,9 @@
 		1B6DD4E123ECD81D004A73F2 /* ListManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B202EFF2332CDE800002EFF /* ListManagerTests.swift */; };
 		1B6DD4E323ED1301004A73F2 /* ListRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6DD4E223ED1301004A73F2 /* ListRepositoryMock.swift */; };
 		1B7299C22329642A00218BBF /* ListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7299C12329642A00218BBF /* ListCellView.swift */; };
+		1B89D8B324104945009F21F5 /* PersistentContainerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B89D8B224104944009F21F5 /* PersistentContainerMock.swift */; };
+		1B89D8B524104CD5009F21F5 /* ListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B89D8B424104CD5009F21F5 /* ListTests.swift */; };
+		1B89D8B724106439009F21F5 /* TaskRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B89D8B624106439009F21F5 /* TaskRepositoryMock.swift */; };
 		1B90A05C238767C900C516D0 /* ListMasterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B90A05B238767C900C516D0 /* ListMasterViewModel.swift */; };
 		1B90A061238C505300C516D0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B90A060238C505300C516D0 /* CoreDataManager.swift */; };
 		1B90A064238C531800C516D0 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B90A063238C531800C516D0 /* Repository.swift */; };
@@ -87,9 +90,15 @@
 		1B4E379B235521A90032FEAC /* FHService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FHService.swift; sourceTree = "<group>"; };
 		1B4E379E23552FF00032FEAC /* FHServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FHServiceMock.swift; sourceTree = "<group>"; };
 		1B4E37A0235537610032FEAC /* CoreDataStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStub.swift; sourceTree = "<group>"; };
+		1B6CA1C4240B80DA003EAB8A /* FamHub 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FamHub 3.xcdatamodel"; sourceTree = "<group>"; };
 		1B6DD4E223ED1301004A73F2 /* ListRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRepositoryMock.swift; sourceTree = "<group>"; };
 		1B7299C12329642A00218BBF /* ListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCellView.swift; sourceTree = "<group>"; };
 		1B7F632D23988F9E00655963 /* FamHub 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FamHub 2.xcdatamodel"; sourceTree = "<group>"; };
+		1B89D8AF240D7752009F21F5 /* FamHub 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FamHub 4.xcdatamodel"; sourceTree = "<group>"; };
+		1B89D8B0240D8E4B009F21F5 /* FamHub 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FamHub 5.xcdatamodel"; sourceTree = "<group>"; };
+		1B89D8B224104944009F21F5 /* PersistentContainerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainerMock.swift; sourceTree = "<group>"; };
+		1B89D8B424104CD5009F21F5 /* ListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTests.swift; sourceTree = "<group>"; };
+		1B89D8B624106439009F21F5 /* TaskRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRepositoryMock.swift; sourceTree = "<group>"; };
 		1B90A05B238767C900C516D0 /* ListMasterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMasterViewModel.swift; sourceTree = "<group>"; };
 		1B90A060238C505300C516D0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		1B90A063238C531800C516D0 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -110,7 +119,7 @@
 		1BE0BBA42327233100B18F20 /* List_ManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List_ManagedObject.swift; sourceTree = "<group>"; };
 		1BE0BBA823272B7600B18F20 /* ListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManager.swift; sourceTree = "<group>"; };
 		1BE17EA2234BE41F00702BAF /* CodingUserInfoKey+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CodingUserInfoKey+Util.swift"; sourceTree = "<group>"; };
-		1BE1CFEF23231B6700EC3FD2 /* FamHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FamHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BE1CFEF23231B6700EC3FD2 /* StackList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BE1CFF223231B6700EC3FD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BE1CFF423231B6700EC3FD2 /* Lists_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lists_VC.swift; sourceTree = "<group>"; };
 		1BE1CFF723231B6700EC3FD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -175,8 +184,19 @@
 				1B4E379E23552FF00032FEAC /* FHServiceMock.swift */,
 				1B4E37A0235537610032FEAC /* CoreDataStub.swift */,
 				1B6DD4E223ED1301004A73F2 /* ListRepositoryMock.swift */,
+				1B89D8B224104944009F21F5 /* PersistentContainerMock.swift */,
+				1B89D8B624106439009F21F5 /* TaskRepositoryMock.swift */,
 			);
 			path = Test;
+			sourceTree = "<group>";
+		};
+		1B6CA1C5240D5998003EAB8A /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				1BCB9010235292A3002DE38E /* TaskViewModel.swift */,
+				1B0E8CD7232AD67A005DCE3E /* TaskCellView.swift */,
+			);
+			path = Task;
 			sourceTree = "<group>";
 		};
 		1B7299C023286DDE00218BBF /* View */ = {
@@ -249,9 +269,8 @@
 		1BBC5B6C2385004700C53965 /* ListDetail */ = {
 			isa = PBXGroup;
 			children = (
-				1B0E8CD7232AD67A005DCE3E /* TaskCellView.swift */,
+				1B6CA1C5240D5998003EAB8A /* Task */,
 				1B0E8CD5232ABB87005DCE3E /* ListDetail_VC.swift */,
-				1BCB9010235292A3002DE38E /* TaskViewModel.swift */,
 				1BCB900D23528300002DE38E /* ListViewModel.swift */,
 			);
 			path = ListDetail;
@@ -316,7 +335,7 @@
 		1BE1CFF023231B6700EC3FD2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1BE1CFEF23231B6700EC3FD2 /* FamHub.app */,
+				1BE1CFEF23231B6700EC3FD2 /* StackList.app */,
 				1BE1D00323231B6A00EC3FD2 /* FamHubTests.xctest */,
 				1BE1D00E23231B6A00EC3FD2 /* FamHubUITests.xctest */,
 			);
@@ -348,6 +367,7 @@
 				1BE1D00923231B6A00EC3FD2 /* Info.plist */,
 				1B202EFF2332CDE800002EFF /* ListManagerTests.swift */,
 				1BCB90122353BFC6002DE38E /* DataSyncTests.swift */,
+				1B89D8B424104CD5009F21F5 /* ListTests.swift */,
 			);
 			path = FamHubTests;
 			sourceTree = "<group>";
@@ -410,7 +430,7 @@
 			);
 			name = FamHub;
 			productName = FamHub;
-			productReference = 1BE1CFEF23231B6700EC3FD2 /* FamHub.app */;
+			productReference = 1BE1CFEF23231B6700EC3FD2 /* StackList.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1BE1D00223231B6A00EC3FD2 /* FamHubTests */ = {
@@ -567,6 +587,7 @@
 				1B90A069238C940000C516D0 /* List.swift in Sources */,
 				1BCB900E23528300002DE38E /* ListViewModel.swift in Sources */,
 				1B202F042334178C00002EFF /* NetworkService.swift in Sources */,
+				1B89D8B724106439009F21F5 /* TaskRepositoryMock.swift in Sources */,
 				1B0E8CD8232AD67A005DCE3E /* TaskCellView.swift in Sources */,
 				1B20052423738228001ED8EE /* User.swift in Sources */,
 				1BE0BBA32326DBC400B18F20 /* Task.swift in Sources */,
@@ -586,6 +607,7 @@
 				1B90A064238C531800C516D0 /* Repository.swift in Sources */,
 				1B6DD4E323ED1301004A73F2 /* ListRepositoryMock.swift in Sources */,
 				1BE1CFF323231B6700EC3FD2 /* AppDelegate.swift in Sources */,
+				1B89D8B324104945009F21F5 /* PersistentContainerMock.swift in Sources */,
 				1B4E379A235503AF0032FEAC /* FamHubAPI.swift in Sources */,
 				1B90A071238F0CCC00C516D0 /* Task_ManagedObject.swift in Sources */,
 				1BE17EA3234BE41F00702BAF /* CodingUserInfoKey+Util.swift in Sources */,
@@ -607,6 +629,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BCB90132353BFC6002DE38E /* DataSyncTests.swift in Sources */,
+				1B89D8B524104CD5009F21F5 /* ListTests.swift in Sources */,
 				1BE17EA1234BBE5300702BAF /* FamHub.xcdatamodeld in Sources */,
 				1B6DD4E123ECD81D004A73F2 /* ListManagerTests.swift in Sources */,
 			);
@@ -775,7 +798,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FC8B1DC8F5B7EB0F6F1ABD8D /* Pods-FamHub.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = FamHub/FamHub.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EQV3T7S72N;
@@ -784,8 +808,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.stackrank.famhub;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = StackList;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -795,7 +820,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EEF8061492D5E261AB27E562 /* Pods-FamHub.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = FamHub/FamHub.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = EQV3T7S72N;
@@ -804,8 +830,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.stackrank.famhub;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = StackList;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -828,7 +855,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FamHub.app/FamHub";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StackList.app/StackList";
 			};
 			name = Debug;
 		};
@@ -849,7 +876,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FamHub.app/FamHub";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StackList.app/StackList";
 			};
 			name = Release;
 		};
@@ -938,10 +965,13 @@
 		1B9667E1233C1A10002ECA06 /* FamHub.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				1B89D8B0240D8E4B009F21F5 /* FamHub 5.xcdatamodel */,
+				1B89D8AF240D7752009F21F5 /* FamHub 4.xcdatamodel */,
+				1B6CA1C4240B80DA003EAB8A /* FamHub 3.xcdatamodel */,
 				1B7F632D23988F9E00655963 /* FamHub 2.xcdatamodel */,
 				1B9667E2233C1A10002ECA06 /* FamHub.xcdatamodel */,
 			);
-			currentVersion = 1B9667E2233C1A10002ECA06 /* FamHub.xcdatamodel */;
+			currentVersion = 1B89D8B0240D8E4B009F21F5 /* FamHub 5.xcdatamodel */;
 			path = FamHub.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

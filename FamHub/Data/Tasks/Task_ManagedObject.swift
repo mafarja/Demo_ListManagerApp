@@ -18,6 +18,9 @@ class Task_ManagedObject: NSManagedObject {
   @NSManaged var completed: Bool
   @NSManaged var posted: Date
   @NSManaged var list_id: String
+  @NSManaged var order: Int
+  @NSManaged var deleted_LM: Bool
+  @NSManaged var date_modified: Date?
   
 }
 

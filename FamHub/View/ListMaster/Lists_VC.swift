@@ -9,8 +9,7 @@
 import UIKit
 import Floaty
 
-class Lists_VC: UIViewController {
-  @IBOutlet weak var tableView: UITableView!
+class Lists_VC: UITableViewController {
   
   let listMasterViewModel = ListMasterViewModel()
   var selectedList: ListViewModel?
@@ -21,33 +20,46 @@ class Lists_VC: UIViewController {
     configUI()
     configActionButton()
     registerModelObservers()
+    
+    self.navigationItem.rightBarButtonItem = editButtonItem
   }
   
   func configUI() {
-    self.title = "List Maker"
+    self.title = "StackList"
+   // navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
   }
   
   func configActionButton() {
     let floaty = Floaty()
     let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
     floaty.addGestureRecognizer(tap)
+    floaty.sticky = true
+    floaty.buttonColor = UIColor.systemBlue
+    //floaty.buttonColor = UIColor(red: 248.0/255.0, green: 47.0/255.0, blue: 95.0/255.0, alpha: 1.0)
     self.view.addSubview(floaty)
   }
   
   private func registerModelObservers() {
-    listMasterViewModel.listViewModels.addObserver(self, options: [.initial, .new]) { listViewModels, change in
+    ListMasterViewModel.listViewModels.addObserver(self) { listViewModels, change in
        
       DispatchQueue.main.async {
-              self.tableView.reloadData()
-
+        self.tableView.reloadData()
       }
     }
+    
+    
      
   }
   
   @objc func handleTap(_ sender: UITapGestureRecognizer) {
     self.performSegue(withIdentifier: "showAddListModal", sender: self)
   }
+    
+  @objc func editTapped(_ sender: UITapGestureRecognizer) {
+    self.performSegue(withIdentifier: "showAddListModal", sender: self)
+  }
+    
+    
   
   @IBAction func unwindToLists(segue:UIStoryboardSegue) {
     
@@ -66,33 +78,57 @@ class Lists_VC: UIViewController {
   }
 }
 
-extension Lists_VC: UITableViewDataSource, UITableViewDelegate {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.listMasterViewModel.listViewModels.value.count
+//MARK: Drag&Drop and Delete
+extension Lists_VC {
+  override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    return .delete
   }
   
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+    return false
+  }
+  
+  override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    
+    let listToMove = ListMasterViewModel.listViewModels.value[sourceIndexPath.row]
+    
+    self.listMasterViewModel.moveList(listViewModel: listToMove, removeAtIndex: sourceIndexPath.row, insertAtIndex: destinationIndexPath.row)
+    
+  }
+  
+  override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+  
+  override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+     
+      listMasterViewModel.archive(list_id: ListMasterViewModel.listViewModels.value[indexPath.row].id)
+      
+      
+    }
+  }
+  
+}
+
+extension Lists_VC {
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return ListMasterViewModel.listViewModels.value.count
+  }
+  
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as! ListCellView
-    cell.listViewModel =  self.listMasterViewModel.listViewModels.value[indexPath.row]
+    cell.listViewModel =  ListMasterViewModel.listViewModels.value[indexPath.row]
+    
+    
+    
     return cell
   }
   
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    self.selectedList = self.listMasterViewModel.listViewModels.value[indexPath.row]
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    self.selectedList = ListMasterViewModel.listViewModels.value[indexPath.row]
     self.performSegue(withIdentifier: "showListDetail", sender: self)
   }
   
-  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-     
-    self.selectedList = self.listMasterViewModel.listViewModels.value[indexPath.row]
-     
-     var complete = UITableViewRowAction(style: .normal, title: "Archive") {
-       (action, indexPath) in
-      
-      guard let selectedList = self.selectedList else { return }
-      self.listMasterViewModel.archive(list_id: selectedList.id)
-    }
-     
-     return [complete]
-   }
+  
 }

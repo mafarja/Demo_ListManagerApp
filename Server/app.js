@@ -35,7 +35,9 @@ var postTasks = function(taskArr, callback) {
   				"status": obj.status,
           "completed": obj.completed,
   				"list_id": obj.list_id,
-  				"date_modified": obj.date_modified
+  				"date_modified": obj.date_modified,
+  				"order": obj.order,
+          "deleted": obj.deleted
 
   			}
   		}, 

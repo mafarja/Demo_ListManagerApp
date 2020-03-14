@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1BE1CFEE23231B6700EC3FD2"
-               BuildableName = "FamHub.app"
+               BuildableName = "StackList.app"
                BlueprintName = "FamHub"
                ReferencedContainer = "container:FamHub.xcodeproj">
             </BuildableReference>
@@ -26,12 +26,13 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1BE1CFEE23231B6700EC3FD2"
-            BuildableName = "FamHub.app"
+            BuildableName = "StackList.app"
             BlueprintName = "FamHub"
             ReferencedContainer = "container:FamHub.xcodeproj">
          </BuildableReference>
@@ -74,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1BE1CFEE23231B6700EC3FD2"
-            BuildableName = "FamHub.app"
+            BuildableName = "StackList.app"
             BlueprintName = "FamHub"
             ReferencedContainer = "container:FamHub.xcodeproj">
          </BuildableReference>
@@ -91,7 +92,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1BE1CFEE23231B6700EC3FD2"
-            BuildableName = "FamHub.app"
+            BuildableName = "StackList.app"
             BlueprintName = "FamHub"
             ReferencedContainer = "container:FamHub.xcodeproj">
          </BuildableReference>

@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:FamHub/Data/Task_ManagedObject+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:FamHub/Data/Task_ManagedObject+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:FamHub.xcodeproj">
    </FileRef>
    <FileRef

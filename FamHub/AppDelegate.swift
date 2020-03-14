@@ -6,6 +6,7 @@
 //  Copyright © 2019 StackRank, LLC. All rights reserved.
 //
 
+//let glb_Domain = "http://127.0.0.1:3001"
 //let glb_Domain = "http://192.168.7.22:3001"
 let glb_Domain = "http://104.236.198.131:3001"
 

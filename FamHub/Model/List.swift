@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol ListDelegate {
+  func listDidUpdate()
+}
+
 class List: Codable {
   
   enum CodingKeys: String, CodingKey {
@@ -21,8 +25,8 @@ class List: Codable {
     case tasks
   }
   
-  let taskRepo = TaskRepository()
-  let listRepo = ListRepository()
+  var taskRepo = TaskRepository()
+  var listRepo = ListRepository()
   
   var id: String
   var name: String
@@ -32,6 +36,8 @@ class List: Codable {
   var user_id: String
   var isArchived: Bool = false
   var tasks: Observable<[Task]> = Observable<[Task]>([])
+  var delegate: ListDelegate?
+  
   
   init(id: String, name: String, user_id: String, description: String?, created: Date, date_modified: Date, isArchived: Bool, tasks: [Task]?) {
     
@@ -90,17 +96,41 @@ class List: Codable {
   
   func addTask(description: String) -> Task? {
     
-    let task = Task(id: Utils().objectId(), description: description, list_id: self.id, completed: false, posted: Date())
+    let task = Task(id: Utils().objectId(), description: description, list_id: self.id, completed: false, posted: Date(), order: 0, deleted: false, date_modified: Date())
     
     guard self.taskRepo.create(a: task) else {
       return nil
     }
     
-    self.tasks.value.insert(task, at: 0)
+    self.tasks.value = self.getTasks()
     
+    self.delegate?.listDidUpdate()
+
     self.updateListDateModified()
     
     return task
+  }
+  
+  func updateTasks(taskViewModels: [TaskViewModel]) {
+    
+    for (index, taskViewModel) in taskViewModels.enumerated() {
+      guard self.taskRepo.update(a: Task(
+        id: taskViewModel.id,
+        description: taskViewModel.description,
+        list_id: taskViewModel.list_id,
+        completed: taskViewModel.completed,
+        posted: taskViewModel.posted,
+        order: index,
+        deleted: taskViewModel.deleted,
+        date_modified: taskViewModel.date_modified)
+      )
+      else { return }
+    }
+    
+    self.tasks.value = self.taskRepo.getAll(identifier: self.id)
+    
+    self.updateListDateModified()
+    
   }
   
   func markTaskCompleted(task_id: String) {
@@ -114,6 +144,8 @@ class List: Codable {
         
       }
     }
+    
+    self.delegate?.listDidUpdate()
     
     self.updateListDateModified()
 
@@ -129,14 +161,25 @@ class List: Codable {
        }
      }
     
+    self.delegate?.listDidUpdate()
+    
     self.updateListDateModified()
 
+  }
+  
+  func delete(task: Task) {
+    task.delete()
+    self.updateListDateModified()
+    self.tasks.value = self.taskRepo.getAll(identifier: self.id)
+    self.delegate?.listDidUpdate()
   }
   
   private func updateListDateModified() {
     self.date_modified = Date()
     self.listRepo.update(a: self)
   }
+  
+
 }
 
 extension List: Equatable {

@@ -18,6 +18,7 @@ class ListManager {
     
     self.repository = repository
     
+    
   }
   
   convenience init() {
@@ -35,6 +36,8 @@ class ListManager {
           completion(nil)
           return
       }
+        
+        list.delegate = self
       
       ListManager.lists.value.insert(list, at: 0)
       
@@ -65,6 +68,10 @@ class ListManager {
     
     ListManager.lists.value = self.repository.getAll(identifier: nil)
     
+    for list in ListManager.lists.value {
+      list.delegate = self
+    }
+    
   }
   
   func archive(list_id: String) {
@@ -78,5 +85,13 @@ class ListManager {
       }
     }
   }
+}
+
+extension ListManager: ListDelegate {
+  func listDidUpdate() {
+    self.getLists()
+  }
+  
+  
 }
 

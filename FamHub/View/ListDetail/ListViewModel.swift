@@ -21,6 +21,9 @@ class ListViewModel {
   var isArchived: Bool
   var taskViewModels: [TaskViewModel]
   var delegate: ListViewModelDelegate?
+  var isEditMode: Observable<Bool> = Observable<Bool>(false)
+  var numberTasksCompleted = 0
+  var totalNumberOfTasks = 0
   
   init(list: List) {
     self.list = list
@@ -50,13 +53,39 @@ class ListViewModel {
     
     for task in tasks {
       self.taskViewModels.append(TaskViewModel(task: task))
+      
+      if (task.completed && !task.deleted) {
+        self.numberTasksCompleted += 1
+      }
+      
     }
+    
+    let minus_deleted = self.taskViewModels.filter {
+      $0.deleted == false
+    }
+    
+    self.taskViewModels = minus_deleted
+    
+    self.taskViewModels.sort(by: { $0.order < $1.order })
+    
+    self.totalNumberOfTasks = self.taskViewModels.count
     
     self.delegate?.didUpdate()
   }
   
   func addTask(description: String) {
     self.list.addTask(description: description)
+  }
+  
+  func delete(task: TaskViewModel) {
+    self.list.delete(task: Task(id: task.id, description: task.description, list_id: task.list_id, completed: task.completed, posted: task.posted, order: task.order, deleted: task.deleted, date_modified: task.date_modified))
+  }
+  
+  func moveTask(taskViewModel: TaskViewModel, removeAtIndex: Int, insertAtIndex: Int) {
+    self.taskViewModels.remove(at: removeAtIndex)
+    self.taskViewModels.insert(taskViewModel, at: insertAtIndex )
+    
+    self.list.updateTasks(taskViewModels: self.taskViewModels)
   }
   
   func markTaskCompleted(task_id: String) {
@@ -75,21 +104,7 @@ extension ListViewModel: Equatable {
   
 }
 
-extension ListViewModel {
-    /// The traditional method for rearranging rows in a table view.
-    func moveItem(at sourceIndex: Int, to destinationIndex: Int) {
-        guard sourceIndex != destinationIndex else { return }
-        
-        let taskViewModel = taskViewModels[sourceIndex]
-        taskViewModels.remove(at: sourceIndex)
-        taskViewModels.insert(taskViewModel, at: destinationIndex)
-    }
-    
-    /// The method for adding a new item to the table view's data model.
-    func addItem(_ taskViewModel: TaskViewModel, at index: Int) {
-        taskViewModels.insert(taskViewModel, at: index)
-    }
-}
+
 
 
 

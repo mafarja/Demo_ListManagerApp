@@ -10,7 +10,7 @@ import Foundation
 
 
 
-class ListRespositoryMock: ListRepository {
+class ListRepositoryMock: ListRepository {
   
   
   var dataArr = [List]()

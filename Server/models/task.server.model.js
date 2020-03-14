@@ -15,7 +15,10 @@ var Task = new Schema({
   },
   date_modified: {
   	type: Date
-  }
+  },
+  order: Number,
+  deleted: Boolean
+
 });
 
 mongoose.model('Task', Task);
